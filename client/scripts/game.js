@@ -1,11 +1,19 @@
+var windowHeight;
+var windowWidth;
+var combatAreaCenter = {};
+var combatAreaLeft   = {};
+var combatAreaRight   = {};
+
+var combatAreaWidth;
+var combatAreaHeight;
+
+var stage;
+
 var context;
 var queue;
-var WIDTH = 1024;
-var HEIGHT = 768;
 var mouseXPosition;
 var mouseYPosition;
 var batImage;
-var stage;
 var animation;
 var deathAnimation;
 var spriteSheet;
@@ -21,56 +29,68 @@ var timerText;
 
 window.onload = function()
 {
+    setSceneCoordinates();
 
-    /*
-     *      Set up the Canvas with Size and height
-     *
-     */
     var canvas = document.getElementById('mainCanvas');
     context = canvas.getContext('2d');
-    context.canvas.width = WIDTH;
-    context.canvas.height = HEIGHT;
-    stage = new createjs.Stage("mainCanvas");
+    context.canvas.width  = windowWidth;
+    context.canvas.height = windowHeight;
 
-    /*
-     *      Set up the Asset Queue and load sounds
-     *
-     */
+    stage = new createjs.Stage("mainCanvas");
+    consoleCanvas = new createjs.Stage("consoleCanvas");
+
+
     queue = new createjs.LoadQueue(false);
     queue.installPlugin(createjs.Sound);
     queue.on("complete", queueLoaded, this);
     createjs.Sound.alternateExtensions = ["ogg"];
 
-    /*
-     *      Create a load manifest for all assets
-     *
-     */
-    queue.loadManifest([
-        {id: 'backgroundImage', src: '/client/assets/background.png'},
-        {id: 'crossHair', src: '/client/assets/crosshair.png'},
-        {id: 'shot', src: '/client/assets/shot.mp3'},
-        {id: 'background', src: '/client/assets/countryside.mp3'},
-        {id: 'gameOverSound', src: '/client/assets/gameOver.mp3'},
-        {id: 'tick', src: '/client/assets/tick.mp3'},
-        {id: 'deathSound', src: '/client/assets/die.mp3'},
-        {id: 'batSpritesheet', src: '/client/assets/batSpritesheet.png'},
-        {id: 'batDeath', src: '/client/assets/batDeath.png'},
-    ]);
+    queue.loadManifest(getAssets());
     queue.load();
 
-    /*
-     *      Create a timer that updates once per second
-     *
-     */
     gameTimer = setInterval(updateTime, 1000);
 
 }
 
+function setSceneCoordinates(){
+    windowHeight = window.innerHeight - window.innerHeight/20;
+    windowWidth  = window.innerWidth - window.innerWidth/20;
+
+    combatAreaWidth = windowWidth/4;
+    combatAreaHeight = combatAreaWidth;
+
+    combatAreaCenter.centerX = windowWidth/2;
+    combatAreaCenter.centerY = windowHeight/2;
+    combatAreaCenter.width = combatAreaWidth;
+    combatAreaCenter.height = combatAreaHeight;
+    combatAreaCenter.x = combatAreaCenter.centerX - combatAreaCenter.width/2;
+    combatAreaCenter.y = combatAreaCenter.centerY - combatAreaCenter.height/2;
+
+
+    combatAreaLeft.centerX = windowWidth/4;
+    combatAreaLeft.centerY = windowHeight/2;
+    combatAreaLeft.width = combatAreaWidth;
+    combatAreaLeft.height = combatAreaHeight;
+    combatAreaLeft.x = combatAreaLeft.centerX - combatAreaLeft.width/2;
+    combatAreaLeft.y = combatAreaLeft.centerY - combatAreaLeft.height/2;
+
+    combatAreaRight.centerX = windowWidth - windowWidth/4;
+    combatAreaRight.centerY = windowHeight/2;
+    combatAreaRight.width = combatAreaWidth;
+    combatAreaRight.height = combatAreaHeight;
+    combatAreaRight.x = combatAreaRight.centerX - combatAreaRight.width/2;
+    combatAreaRight.y = combatAreaRight.centerY - combatAreaRight.height/2;
+
+}
+
+
 function queueLoaded(event)
 {
+
     // Add background image
     var backgroundImage = new createjs.Bitmap(queue.getResult("backgroundImage"))
     stage.addChild(backgroundImage);
+    
 
     //Add Score
     scoreText = new createjs.Text("1UP: " + score.toString(), "36px Arial", "#FFF");
@@ -89,6 +109,7 @@ function queueLoaded(event)
 
     // Create bat spritesheet
     spriteSheet = new createjs.SpriteSheet({
+        // x, y, width, height, imageIndex*, regX*, regY*
         "images": [queue.getResult('batSpritesheet')],
         "frames": {"width": 198, "height": 117},
         "animations": { "flap": [0,4] }
@@ -101,16 +122,7 @@ function queueLoaded(event)
     	"animations": {"die": [0,7, false,1 ] }
     });
 
-    // Create bat sprite
-    createEnemy();
-
-   /*
-    // Create crosshair
-    crossHair = new createjs.Bitmap(queue.getResult("crossHair"));
-    crossHair.x = WIDTH/2;
-    crossHair.y = HEIGHT/2;
-    stage.addChild(crossHair);
-    */
+    createEnemies();
 
     // Add ticker
     createjs.Ticker.setFPS(15);
@@ -118,67 +130,82 @@ function queueLoaded(event)
     createjs.Ticker.addEventListener('tick', tickEvent);
 
     // Set up events AFTER the game is loaded
-   // window.onmousemove = handleMouseMove;
+    //window.onmousemove = handleMouseMove;
     window.onmousedown = handleMouseDown;
+
+
 }
 
 
-function createEnemy()
+function createEnemies()
 {
 	animation = new createjs.Sprite(spriteSheet, "flap");
     animation.regX = 99;
     animation.regY = 58;
-    animation.x = enemyXPos;
-    animation.y = enemyYPos;
+    animation.x = combatAreaCenter.centerX;
+    animation.y = combatAreaCenter.centerY;
+    animation.gotoAndPlay("flap");
+    stage.addChildAt(animation,1);
+
+    animation = new createjs.Sprite(spriteSheet, "flap");
+    animation.regX = 99;
+    animation.regY = 58;
+    animation.x = combatAreaLeft.centerX;
+    animation.y = combatAreaLeft.centerY;
+    animation.gotoAndPlay("flap");
+    stage.addChildAt(animation,2);
+
+    animation = new createjs.Sprite(spriteSheet, "flap");
+    animation.regX = 99;
+    animation.regY = 58;
+    animation.x = combatAreaRight.centerX;
+    animation.y = combatAreaRight.centerY;
+    animation.gotoAndPlay("flap");
+    stage.addChildAt(animation,3);
+}
+
+function createEnemySprite(enemy){
+	animation = new createjs.Sprite(spriteSheet, "flap");
+    animation.regX = 99;
+    animation.regY = 58;
+    animation.x = combatAreaCenter.centerX;
+    animation.y = combatAreaCenter.centerY;
     animation.gotoAndPlay("flap");
     stage.addChildAt(animation,1);
 }
+
+
 
 function batDeath()
 {
   deathAnimation = new createjs.Sprite(batDeathSpriteSheet, "die");
   deathAnimation.regX = 99;
   deathAnimation.regY = 58;
-  deathAnimation.x = enemyXPos;
-  deathAnimation.y = enemyYPos;
+  deathAnimation.x = combatAreaCenter.centerX;
+  deathAnimation.y = combatAreaCenter.centerY;
   deathAnimation.gotoAndPlay("die");
   stage.addChild(deathAnimation);
 }
 
 function tickEvent()
 {
-	//Make sure enemy bat is within game boundaries and move enemy Bat
-	if(enemyXPos < WIDTH && enemyXPos > 0)
-	{
-		enemyXPos += enemyXSpeed;
-	} else 
-	{
-		enemyXSpeed = enemyXSpeed * (-1);
-		enemyXPos += enemyXSpeed;
-	}
-	if(enemyYPos < HEIGHT && enemyYPos > 0)
-	{
-		enemyYPos += enemyYSpeed;
-	} else
-	{
-		enemyYSpeed = enemyYSpeed * (-1);
-		enemyYPos += enemyYSpeed;
-	}
 
+    /*
 	animation.x = enemyXPos;
 	animation.y = enemyYPos;
+    */
 
+    drawSceneRectangles();
 	
 }
 
-/*
+
 function handleMouseMove(event)
 {
-    //Offset the position by 45 pixels so mouse is in center of crosshair
     crossHair.x = event.clientX-45;
     crossHair.y = event.clientY-45;
 }
-*/
+
 
 function handleMouseDown(event)
 {
@@ -252,4 +279,44 @@ function updateTime()
 		timerText.text = "Time: " + gameTime
     createjs.Sound.play("tick");
 	}
+}
+
+function getAssets(){
+    return [
+        {id: 'backgroundImage', src: '/client/assets/blueBack.jpg'},
+        {id: 'crossHair', src: '/client/assets/crosshair.png'},
+        {id: 'shot', src: '/client/assets/shot.mp3'},
+        {id: 'background', src: '/client/assets/countryside.mp3'},
+        {id: 'gameOverSound', src: '/client/assets/gameOver.mp3'},
+        {id: 'tick', src: '/client/assets/tick.mp3'},
+        {id: 'deathSound', src: '/client/assets/die.mp3'},
+        {id: 'batSpritesheet', src: '/client/assets/batSpritesheet.png'},
+        {id: 'batDeath', src: '/client/assets/batDeath.png'},
+    ]
+}
+
+
+function drawSceneRectangles(){
+    drawRectangle(combatAreaCenter);
+    drawRectangle(combatAreaLeft);
+    drawRectangle(combatAreaRight);
+
+
+    var frame = {};
+    frame.x = 0;
+    frame.y = 0;
+    frame.height = context.canvas.height;
+    frame.width = context.canvas.width;
+    drawRectangle(frame);
+}
+
+
+function drawRectangle(coordinates){
+
+    context.beginPath();
+    context.lineWidth="6";
+    context.strokeStyle="red";
+    context.rect(coordinates.x, coordinates.y, coordinates.width, coordinates.height); 
+    context.stroke();
+
 }
