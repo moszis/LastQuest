@@ -8,6 +8,8 @@ npm install webpack --save-dev
 npm install babel-preset-env --save-dev
 npm install babel-loader --save-dev
 
+npm install webpack-dev-server --save-dev
+
 npm install express --save 
 npm install socket.io --save 
 
@@ -18,3 +20,4 @@ node for webserver
 express for server side routing
 webpack/babel for converting to ES6
 babel-loader to load babel with webpack
+webpack-dev-server to update the build on the fly
