@@ -1,3 +1,5 @@
+import GreeterModule from './combat/enemy.js';
+
 var windowHeight;
 var windowWidth;
 var combatAreaCenter = {};
@@ -14,9 +16,9 @@ var queue;
 var mouseXPosition;
 var mouseYPosition;
 var batImage;
-var animation;
 var deathAnimation;
 var spriteSheet;
+var batDeathSpriteSheet;
 var enemyXPos=100;
 var enemyYPos=100;
 var enemyXSpeed = 1.5;
@@ -29,6 +31,12 @@ var timerText;
 
 window.onload = function()
 {
+    //ES6 syntax test
+    let greeterMod = new GreeterModule("Mod Ser");
+    greeterMod.greet();
+
+
+
     setSceneCoordinates();
 
     var canvas = document.getElementById('mainCanvas');
@@ -37,7 +45,7 @@ window.onload = function()
     context.canvas.height = windowHeight;
 
     stage = new createjs.Stage("mainCanvas");
-    consoleCanvas = new createjs.Stage("consoleCanvas");
+    var consoleCanvas = new createjs.Stage("consoleCanvas");
 
 
     queue = new createjs.LoadQueue(false);
@@ -139,41 +147,51 @@ function queueLoaded(event)
 
 function createEnemies()
 {
-	animation = new createjs.Sprite(spriteSheet, "flap");
-    animation.regX = 99;
-    animation.regY = 58;
-    animation.x = combatAreaCenter.centerX;
-    animation.y = combatAreaCenter.centerY;
-    animation.gotoAndPlay("flap");
-    stage.addChildAt(animation,1);
+    alert("here");
+	var enemy = new createjs.Sprite(spriteSheet, "flap");
+    enemy.regX = 99;
+    enemy.regY = 58;
+    enemy.x = combatAreaCenter.centerX;
+    enemy.y = combatAreaCenter.centerY;
+    enemy.gotoAndPlay("flap");
+    enemy.addEventListener("click", handleClickEvent);
+    stage.addChildAt(enemy,1);
 
-    animation = new createjs.Sprite(spriteSheet, "flap");
-    animation.regX = 99;
-    animation.regY = 58;
-    animation.x = combatAreaLeft.centerX;
-    animation.y = combatAreaLeft.centerY;
-    animation.gotoAndPlay("flap");
-    stage.addChildAt(animation,2);
+    var enemy2 = new createjs.Sprite(spriteSheet, "flap");
+    enemy2.regX = 99;
+    enemy2.regY = 58;
+    enemy2.x = combatAreaLeft.centerX;
+    enemy2.y = combatAreaLeft.centerY;
+    enemy2.gotoAndPlay("flap");
+    enemy2.addEventListener("click", handleClickEvent);
+    stage.addChildAt(enemy2, 2);
 
-    animation = new createjs.Sprite(spriteSheet, "flap");
-    animation.regX = 99;
-    animation.regY = 58;
-    animation.x = combatAreaRight.centerX;
-    animation.y = combatAreaRight.centerY;
-    animation.gotoAndPlay("flap");
-    stage.addChildAt(animation,3);
+    var enemy3 = new createjs.Sprite(spriteSheet, "flap");
+    enemy3.regX = 99;
+    enemy3.regY = 58;
+    enemy3.x = combatAreaLeft.centerX;
+    enemy3.y = combatAreaLeft.centerY;
+    enemy3.gotoAndPlay("flap");
+    enemy3.addEventListener("click", handleClickEvent);
+    stage.addChildAt(enemy3, 2);
 }
 
+function handleClickEvent(){}
+
+function selectEnemy(count){
+    alert("Selecting enemy # "+count);
+
+}
 function createEnemySprite(enemy){
-	animation = new createjs.Sprite(spriteSheet, "flap");
-    animation.regX = 99;
-    animation.regY = 58;
-    animation.x = combatAreaCenter.centerX;
-    animation.y = combatAreaCenter.centerY;
-    animation.gotoAndPlay("flap");
-    stage.addChildAt(animation,1);
+    var enemy3 = new createjs.Sprite(spriteSheet, "flap");
+    enemy3.regX = 99;
+    enemy3.regY = 58;
+    enemy3.x = combatAreaLeft.centerX;
+    enemy3.y = combatAreaLeft.centerY;
+    enemy3.gotoAndPlay("flap");
+    enemy3.addEventListener("click", handleClickEvent);
+    stage.addChildAt(enemy3, 2);
 }
-
 
 
 function batDeath()
