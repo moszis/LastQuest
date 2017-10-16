@@ -1,67 +1,26 @@
 /******/ (function(modules) { // webpackBootstrap
-/******/ 	function hotDisposeChunk(chunkId) {
-/******/ 		delete installedChunks[chunkId];
-/******/ 	}
-/******/ 	var parentHotUpdateCallback = this["webpackHotUpdate"];
-/******/ 	this["webpackHotUpdate"] = 
-/******/ 	function webpackHotUpdateCallback(chunkId, moreModules) { // eslint-disable-line no-unused-vars
-/******/ 		hotAddUpdateChunk(chunkId, moreModules);
-/******/ 		if(parentHotUpdateCallback) parentHotUpdateCallback(chunkId, moreModules);
-/******/ 	} ;
-/******/ 	
 /******/ 	function hotDownloadUpdateChunk(chunkId) { // eslint-disable-line no-unused-vars
-/******/ 		var head = document.getElementsByTagName("head")[0];
-/******/ 		var script = document.createElement("script");
-/******/ 		script.type = "text/javascript";
-/******/ 		script.charset = "utf-8";
-/******/ 		script.src = __webpack_require__.p + "" + chunkId + "." + hotCurrentHash + ".hot-update.js";
-/******/ 		;
-/******/ 		head.appendChild(script);
+/******/ 		var chunk = require("./" + "" + chunkId + "." + hotCurrentHash + ".hot-update.js");
+/******/ 		hotAddUpdateChunk(chunk.id, chunk.modules);
 /******/ 	}
 /******/ 	
-/******/ 	function hotDownloadManifest(requestTimeout) { // eslint-disable-line no-unused-vars
-/******/ 		requestTimeout = requestTimeout || 10000;
-/******/ 		return new Promise(function(resolve, reject) {
-/******/ 			if(typeof XMLHttpRequest === "undefined")
-/******/ 				return reject(new Error("No browser support"));
-/******/ 			try {
-/******/ 				var request = new XMLHttpRequest();
-/******/ 				var requestPath = __webpack_require__.p + "" + hotCurrentHash + ".hot-update.json";
-/******/ 				request.open("GET", requestPath, true);
-/******/ 				request.timeout = requestTimeout;
-/******/ 				request.send(null);
-/******/ 			} catch(err) {
-/******/ 				return reject(err);
-/******/ 			}
-/******/ 			request.onreadystatechange = function() {
-/******/ 				if(request.readyState !== 4) return;
-/******/ 				if(request.status === 0) {
-/******/ 					// timeout
-/******/ 					reject(new Error("Manifest request to " + requestPath + " timed out."));
-/******/ 				} else if(request.status === 404) {
-/******/ 					// no update available
-/******/ 					resolve();
-/******/ 				} else if(request.status !== 200 && request.status !== 304) {
-/******/ 					// other failure
-/******/ 					reject(new Error("Manifest request to " + requestPath + " failed."));
-/******/ 				} else {
-/******/ 					// success
-/******/ 					try {
-/******/ 						var update = JSON.parse(request.responseText);
-/******/ 					} catch(e) {
-/******/ 						reject(e);
-/******/ 						return;
-/******/ 					}
-/******/ 					resolve(update);
-/******/ 				}
-/******/ 			};
-/******/ 		});
+/******/ 	function hotDownloadManifest() { // eslint-disable-line no-unused-vars
+/******/ 		try {
+/******/ 			var update = require("./" + "" + hotCurrentHash + ".hot-update.json");
+/******/ 		} catch(e) {
+/******/ 			return Promise.resolve();
+/******/ 		}
+/******/ 		return Promise.resolve(update);
+/******/ 	}
+/******/ 	
+/******/ 	function hotDisposeChunk(chunkId) { //eslint-disable-line no-unused-vars
+/******/ 		delete installedChunks[chunkId];
 /******/ 	}
 /******/
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "7adeee20fdacb2e0c2d3"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "20efa5d66bbf6f4a91a5"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -722,328 +681,81 @@
 /******/ 	__webpack_require__.h = function() { return hotCurrentHash; };
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return hotCreateRequire(0)(__webpack_require__.s = 0);
+/******/ 	return hotCreateRequire(1)(__webpack_require__.s = 1);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports) {
 
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__combat_enemy_js__ = __webpack_require__(1);
-
-
-var windowHeight;
-var windowWidth;
-var combatAreaCenter = {};
-var combatAreaLeft = {};
-var combatAreaRight = {};
-
-var combatAreaWidth;
-var combatAreaHeight;
-
-var stage;
-
-var context;
-var queue;
-var mouseXPosition;
-var mouseYPosition;
-var batImage;
-var deathAnimation;
-var spriteSheet;
-var batDeathSpriteSheet;
-var enemyXPos = 100;
-var enemyYPos = 100;
-var enemyXSpeed = 1.5;
-var enemyYSpeed = 1.75;
-var score = 0;
-var scoreText;
-var gameTimer;
-var gameTime = 0;
-var timerText;
-
-window.onload = function () {
-    //ES6 syntax test
-    let greeterMod = new __WEBPACK_IMPORTED_MODULE_0__combat_enemy_js__["a" /* default */]("Mod Ser");
-    greeterMod.greet();
-
-    setSceneCoordinates();
-
-    var canvas = document.getElementById('mainCanvas');
-    context = canvas.getContext('2d');
-    context.canvas.width = windowWidth;
-    context.canvas.height = windowHeight;
-
-    stage = new createjs.Stage("mainCanvas");
-    var consoleCanvas = new createjs.Stage("consoleCanvas");
-
-    queue = new createjs.LoadQueue(false);
-    queue.installPlugin(createjs.Sound);
-    queue.on("complete", queueLoaded, this);
-    createjs.Sound.alternateExtensions = ["ogg"];
-
-    queue.loadManifest(getAssets());
-    queue.load();
-
-    gameTimer = setInterval(updateTime, 1000);
-};
-
-function setSceneCoordinates() {
-    windowHeight = window.innerHeight - window.innerHeight / 20;
-    windowWidth = window.innerWidth - window.innerWidth / 20;
-
-    combatAreaWidth = windowWidth / 4;
-    combatAreaHeight = combatAreaWidth;
-
-    combatAreaCenter.centerX = windowWidth / 2;
-    combatAreaCenter.centerY = windowHeight / 2;
-    combatAreaCenter.width = combatAreaWidth;
-    combatAreaCenter.height = combatAreaHeight;
-    combatAreaCenter.x = combatAreaCenter.centerX - combatAreaCenter.width / 2;
-    combatAreaCenter.y = combatAreaCenter.centerY - combatAreaCenter.height / 2;
-
-    combatAreaLeft.centerX = windowWidth / 4;
-    combatAreaLeft.centerY = windowHeight / 2;
-    combatAreaLeft.width = combatAreaWidth;
-    combatAreaLeft.height = combatAreaHeight;
-    combatAreaLeft.x = combatAreaLeft.centerX - combatAreaLeft.width / 2;
-    combatAreaLeft.y = combatAreaLeft.centerY - combatAreaLeft.height / 2;
-
-    combatAreaRight.centerX = windowWidth - windowWidth / 4;
-    combatAreaRight.centerY = windowHeight / 2;
-    combatAreaRight.width = combatAreaWidth;
-    combatAreaRight.height = combatAreaHeight;
-    combatAreaRight.x = combatAreaRight.centerX - combatAreaRight.width / 2;
-    combatAreaRight.y = combatAreaRight.centerY - combatAreaRight.height / 2;
-}
-
-function queueLoaded(event) {
-
-    // Add background image
-    var backgroundImage = new createjs.Bitmap(queue.getResult("backgroundImage"));
-    stage.addChild(backgroundImage);
-
-    //Add Score
-    scoreText = new createjs.Text("1UP: " + score.toString(), "36px Arial", "#FFF");
-    scoreText.x = 10;
-    scoreText.y = 10;
-    stage.addChild(scoreText);
-
-    //Ad Timer
-    timerText = new createjs.Text("Time: " + gameTime.toString(), "36px Arial", "#FFF");
-    timerText.x = 800;
-    timerText.y = 10;
-    stage.addChild(timerText);
-
-    // Play background sound
-    createjs.Sound.play("background", { loop: -1 });
-
-    // Create bat spritesheet
-    spriteSheet = new createjs.SpriteSheet({
-        // x, y, width, height, imageIndex*, regX*, regY*
-        "images": [queue.getResult('batSpritesheet')],
-        "frames": { "width": 198, "height": 117 },
-        "animations": { "flap": [0, 4] }
-    });
-
-    // Create bat death spritesheet
-    batDeathSpriteSheet = new createjs.SpriteSheet({
-        "images": [queue.getResult('batDeath')],
-        "frames": { "width": 198, "height": 148 },
-        "animations": { "die": [0, 7, false, 1] }
-    });
-
-    createEnemies();
-
-    // Add ticker
-    createjs.Ticker.setFPS(15);
-    createjs.Ticker.addEventListener('tick', stage);
-    createjs.Ticker.addEventListener('tick', tickEvent);
-
-    // Set up events AFTER the game is loaded
-    //window.onmousemove = handleMouseMove;
-    window.onmousedown = handleMouseDown;
-}
-
-function createEnemies() {
-    alert("here");
-    var enemy = new createjs.Sprite(spriteSheet, "flap");
-    enemy.regX = 99;
-    enemy.regY = 58;
-    enemy.x = combatAreaCenter.centerX;
-    enemy.y = combatAreaCenter.centerY;
-    enemy.gotoAndPlay("flap");
-    enemy.addEventListener("click", handleClickEvent);
-    stage.addChildAt(enemy, 1);
-
-    var enemy2 = new createjs.Sprite(spriteSheet, "flap");
-    enemy2.regX = 99;
-    enemy2.regY = 58;
-    enemy2.x = combatAreaLeft.centerX;
-    enemy2.y = combatAreaLeft.centerY;
-    enemy2.gotoAndPlay("flap");
-    enemy2.addEventListener("click", handleClickEvent);
-    stage.addChildAt(enemy2, 2);
-
-    var enemy3 = new createjs.Sprite(spriteSheet, "flap");
-    enemy3.regX = 99;
-    enemy3.regY = 58;
-    enemy3.x = combatAreaLeft.centerX;
-    enemy3.y = combatAreaLeft.centerY;
-    enemy3.gotoAndPlay("flap");
-    enemy3.addEventListener("click", handleClickEvent);
-    stage.addChildAt(enemy3, 2);
-}
-
-function handleClickEvent() {}
-
-function selectEnemy(count) {
-    alert("Selecting enemy # " + count);
-}
-function createEnemySprite(enemy) {
-    var enemy3 = new createjs.Sprite(spriteSheet, "flap");
-    enemy3.regX = 99;
-    enemy3.regY = 58;
-    enemy3.x = combatAreaLeft.centerX;
-    enemy3.y = combatAreaLeft.centerY;
-    enemy3.gotoAndPlay("flap");
-    enemy3.addEventListener("click", handleClickEvent);
-    stage.addChildAt(enemy3, 2);
-}
-
-function batDeath() {
-    deathAnimation = new createjs.Sprite(batDeathSpriteSheet, "die");
-    deathAnimation.regX = 99;
-    deathAnimation.regY = 58;
-    deathAnimation.x = combatAreaCenter.centerX;
-    deathAnimation.y = combatAreaCenter.centerY;
-    deathAnimation.gotoAndPlay("die");
-    stage.addChild(deathAnimation);
-}
-
-function tickEvent() {
-
-    /*
-    animation.x = enemyXPos;
-    animation.y = enemyYPos;
-    */
-
-    drawSceneRectangles();
-}
-
-function handleMouseMove(event) {
-    crossHair.x = event.clientX - 45;
-    crossHair.y = event.clientY - 45;
-}
-
-function handleMouseDown(event) {
-
-    //Display CrossHair
-    crossHair = new createjs.Bitmap(queue.getResult("crossHair"));
-    crossHair.x = event.clientX - 45;
-    crossHair.y = event.clientY - 45;
-    stage.addChild(crossHair);
-    createjs.Tween.get(crossHair).to({ alpha: 0 }, 1000);
-
-    //Play Gunshot sound
-    createjs.Sound.play("shot");
-
-    //Increase speed of enemy slightly
-    enemyXSpeed *= 1.05;
-    enemyYSpeed *= 1.06;
-
-    //Obtain Shot position
-    var shotX = Math.round(event.clientX);
-    var shotY = Math.round(event.clientY);
-    var spriteX = Math.round(animation.x);
-    var spriteY = Math.round(animation.y);
-
-    // Compute the X and Y distance using absolte value
-    var distX = Math.abs(shotX - spriteX);
-    var distY = Math.abs(shotY - spriteY);
-
-    // Anywhere in the body or head is a hit - but not the wings
-    if (distX < 30 && distY < 59) {
-        //Hit
-        stage.removeChild(animation);
-        batDeath();
-        score += 100;
-        scoreText.text = "1UP: " + score.toString();
-        createjs.Sound.play("deathSound");
-
-        //Make it harder next time
-        enemyYSpeed *= 1.25;
-        enemyXSpeed *= 1.3;
-
-        //Create new enemy
-        var timeToCreate = Math.floor(Math.random() * 3500 + 1);
-        setTimeout(createEnemy, timeToCreate);
-    } else {
-        //Miss
-        score -= 10;
-        scoreText.text = "1UP: " + score.toString();
-    }
-}
-
-function updateTime() {
-    gameTime += 1;
-    if (gameTime > 60) {
-        //End Game and Clean up
-        timerText.text = "GAME OVER";
-        stage.removeChild(animation);
-        stage.removeChild(crossHair);
-        createjs.Sound.removeSound("background");
-        var si = createjs.Sound.play("gameOverSound");
-        clearInterval(gameTimer);
-    } else {
-        timerText.text = "Time: " + gameTime;
-        createjs.Sound.play("tick");
-    }
-}
-
-function getAssets() {
-    return [{ id: 'backgroundImage', src: '/client/assets/blueBack.jpg' }, { id: 'crossHair', src: '/client/assets/crosshair.png' }, { id: 'shot', src: '/client/assets/shot.mp3' }, { id: 'background', src: '/client/assets/countryside.mp3' }, { id: 'gameOverSound', src: '/client/assets/gameOver.mp3' }, { id: 'tick', src: '/client/assets/tick.mp3' }, { id: 'deathSound', src: '/client/assets/die.mp3' }, { id: 'batSpritesheet', src: '/client/assets/batSpritesheet.png' }, { id: 'batDeath', src: '/client/assets/batDeath.png' }];
-}
-
-function drawSceneRectangles() {
-    drawRectangle(combatAreaCenter);
-    drawRectangle(combatAreaLeft);
-    drawRectangle(combatAreaRight);
-
-    var frame = {};
-    frame.x = 0;
-    frame.y = 0;
-    frame.height = context.canvas.height;
-    frame.width = context.canvas.width;
-    drawRectangle(frame);
-}
-
-function drawRectangle(coordinates) {
-
-    context.beginPath();
-    context.lineWidth = "6";
-    context.strokeStyle = "red";
-    context.rect(coordinates.x, coordinates.y, coordinates.width, coordinates.height);
-    context.stroke();
-}
+module.exports = require("express");
 
 /***/ }),
 /* 1 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-class GreeterModule {
-  constructor(message) {
-    this.message = message;
-  }
+/* WEBPACK VAR INJECTION */(function(__dirname) {// Dependencies
+var express = __webpack_require__(0);
+var http = __webpack_require__(2);
+const path = __webpack_require__(3);
+//var socketIO = require('socket.io');
 
-  greet() {
-    alert(this.message);
-  }
+var app = express();
+var server = http.Server(app);
+//var io = socketIO(server);
+
+app.set('port', 5000);
+app.use('/client', express.static(__dirname + '/client'));
+app.use('/dist', express.static(__dirname + '/dist'));
+
+// Routing
+app.get('/', function (request, response) {
+  response.sendFile(path.join(__dirname, './client/index.html'));
+});
+
+var router = __webpack_require__(4)();
+
+app.use('/services', router);
+
+console.log("GOT ROUTER");
+
+// Starts the server.
+server.listen(5000, function () {
+  console.log('Starting server on port 5000');
+});
+/* WEBPACK VAR INJECTION */}.call(exports, "/"))
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports) {
+
+module.exports = require("http");
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports) {
+
+module.exports = require("path");
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var express = __webpack_require__(0);
+//import TestServices from './services/testServices';
+
+var routes = function () {
+
+    var router = express.Router();
+
+    router.route('/test1').get(function (req, res) {
+        console.log("serving test");
+        res.status(200).send("hello");
+    });
+    return router;
 };
 
-/* harmony default export */ __webpack_exports__["a"] = (GreeterModule);
+module.exports = routes;
 
 /***/ })
 /******/ ]);

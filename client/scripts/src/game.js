@@ -1,18 +1,23 @@
-import GreeterModule from './combat/enemy.js';
+import Enemy from './combat/enemy';
+import Scene from './environment/scene'
+import AssetServices from './assets/testAssetServices';
+//********test */
+import omTest from './environment/objectManager';
 
-var windowHeight;
-var windowWidth;
-var combatAreaCenter = {};
-var combatAreaLeft   = {};
-var combatAreaRight   = {};
 
-var combatAreaWidth;
-var combatAreaHeight;
+//This should be passed on page request
+var sceneInfo = {
+    zoneCode : "testCombatArea",
+    eventCode : "combat"
+}
 
+var scene;
 var stage;
-
 var context;
 var queue;
+
+
+
 var mouseXPosition;
 var mouseYPosition;
 var batImage;
@@ -29,71 +34,52 @@ var gameTimer;
 var gameTime = 0;
 var timerText;
 
+var crossHair;
+var enemy;
+
 window.onload = function()
 {
-    //ES6 syntax test
-    let greeterMod = new GreeterModule("Mod Ser");
-    greeterMod.greet();
 
+    alert(omTest());
 
+    scene = new Scene(sceneInfo);
 
-    setSceneCoordinates();
 
     var canvas = document.getElementById('mainCanvas');
     context = canvas.getContext('2d');
-    context.canvas.width  = windowWidth;
-    context.canvas.height = windowHeight;
+    context.canvas.width  = scene.windowWidth;
+    context.canvas.height = scene.windowHeight;
 
     stage = new createjs.Stage("mainCanvas");
-    var consoleCanvas = new createjs.Stage("consoleCanvas");
+
 
 
     queue = new createjs.LoadQueue(false);
     queue.installPlugin(createjs.Sound);
     queue.on("complete", queueLoaded, this);
     createjs.Sound.alternateExtensions = ["ogg"];
+    
+    console.log("before");
+    AssetServices.getAssetListByZone("arena")
+        .then(data => {
+            console.log('Data:', data)
 
-    queue.loadManifest(getAssets());
-    queue.load();
+            queue.loadManifest(data);
+            queue.load();
+
+        })
+        console.log("after");
+
 
     gameTimer = setInterval(updateTime, 1000);
 
 }
 
-function setSceneCoordinates(){
-    windowHeight = window.innerHeight - window.innerHeight/20;
-    windowWidth  = window.innerWidth - window.innerWidth/20;
-
-    combatAreaWidth = windowWidth/4;
-    combatAreaHeight = combatAreaWidth;
-
-    combatAreaCenter.centerX = windowWidth/2;
-    combatAreaCenter.centerY = windowHeight/2;
-    combatAreaCenter.width = combatAreaWidth;
-    combatAreaCenter.height = combatAreaHeight;
-    combatAreaCenter.x = combatAreaCenter.centerX - combatAreaCenter.width/2;
-    combatAreaCenter.y = combatAreaCenter.centerY - combatAreaCenter.height/2;
-
-
-    combatAreaLeft.centerX = windowWidth/4;
-    combatAreaLeft.centerY = windowHeight/2;
-    combatAreaLeft.width = combatAreaWidth;
-    combatAreaLeft.height = combatAreaHeight;
-    combatAreaLeft.x = combatAreaLeft.centerX - combatAreaLeft.width/2;
-    combatAreaLeft.y = combatAreaLeft.centerY - combatAreaLeft.height/2;
-
-    combatAreaRight.centerX = windowWidth - windowWidth/4;
-    combatAreaRight.centerY = windowHeight/2;
-    combatAreaRight.width = combatAreaWidth;
-    combatAreaRight.height = combatAreaHeight;
-    combatAreaRight.x = combatAreaRight.centerX - combatAreaRight.width/2;
-    combatAreaRight.y = combatAreaRight.centerY - combatAreaRight.height/2;
-
-}
 
 
 function queueLoaded(event)
 {
+
 
     // Add background image
     var backgroundImage = new createjs.Bitmap(queue.getResult("backgroundImage"))
@@ -144,15 +130,19 @@ function queueLoaded(event)
 
 }
 
+function createEnemy(){
+  var enemy = new Enemy(sceneInfo);
+
+}
 
 function createEnemies()
 {
-    alert("here");
-	var enemy = new createjs.Sprite(spriteSheet, "flap");
+
+	enemy = new createjs.Sprite(spriteSheet, "flap");
     enemy.regX = 99;
     enemy.regY = 58;
-    enemy.x = combatAreaCenter.centerX;
-    enemy.y = combatAreaCenter.centerY;
+    enemy.x = scene.combatAreaCenter.centerX;
+    enemy.y = scene.combatAreaCenter.centerY;
     enemy.gotoAndPlay("flap");
     enemy.addEventListener("click", handleClickEvent);
     stage.addChildAt(enemy,1);
@@ -160,8 +150,8 @@ function createEnemies()
     var enemy2 = new createjs.Sprite(spriteSheet, "flap");
     enemy2.regX = 99;
     enemy2.regY = 58;
-    enemy2.x = combatAreaLeft.centerX;
-    enemy2.y = combatAreaLeft.centerY;
+    enemy2.x = scene.combatAreaLeft.centerX;
+    enemy2.y = scene.combatAreaLeft.centerY;
     enemy2.gotoAndPlay("flap");
     enemy2.addEventListener("click", handleClickEvent);
     stage.addChildAt(enemy2, 2);
@@ -169,28 +159,26 @@ function createEnemies()
     var enemy3 = new createjs.Sprite(spriteSheet, "flap");
     enemy3.regX = 99;
     enemy3.regY = 58;
-    enemy3.x = combatAreaLeft.centerX;
-    enemy3.y = combatAreaLeft.centerY;
+    enemy3.x = scene.combatAreaLeft.centerX;
+    enemy3.y = scene.combatAreaLeft.centerY;
     enemy3.gotoAndPlay("flap");
     enemy3.addEventListener("click", handleClickEvent);
     stage.addChildAt(enemy3, 2);
+    
 }
 
 function handleClickEvent(){}
 
-function selectEnemy(count){
-    alert("Selecting enemy # "+count);
 
-}
 function createEnemySprite(enemy){
-    var enemy3 = new createjs.Sprite(spriteSheet, "flap");
-    enemy3.regX = 99;
-    enemy3.regY = 58;
-    enemy3.x = combatAreaLeft.centerX;
-    enemy3.y = combatAreaLeft.centerY;
-    enemy3.gotoAndPlay("flap");
-    enemy3.addEventListener("click", handleClickEvent);
-    stage.addChildAt(enemy3, 2);
+	enemy = new createjs.Sprite(spriteSheet, "flap");
+    enemy.regX = 99;
+    enemy.regY = 58;
+    enemy.x = scene.combatAreaCenter.centerX;
+    enemy.y = scene.combatAreaCenter.centerY;
+    enemy.gotoAndPlay("flap");
+    enemy.addEventListener("click", handleClickEvent);
+    stage.addChildAt(enemy,1);
 }
 
 
@@ -199,8 +187,8 @@ function batDeath()
   deathAnimation = new createjs.Sprite(batDeathSpriteSheet, "die");
   deathAnimation.regX = 99;
   deathAnimation.regY = 58;
-  deathAnimation.x = combatAreaCenter.centerX;
-  deathAnimation.y = combatAreaCenter.centerY;
+  deathAnimation.x = scene.combatAreaCenter.centerX;
+  deathAnimation.y = scene.combatAreaCenter.centerY;
   deathAnimation.gotoAndPlay("die");
   stage.addChild(deathAnimation);
 }
@@ -208,10 +196,10 @@ function batDeath()
 function tickEvent()
 {
 
-    /*
-	animation.x = enemyXPos;
-	animation.y = enemyYPos;
-    */
+
+	enemy.x = enemyXPos;
+	enemy.y = enemyYPos;
+    
 
     drawSceneRectangles();
 	
@@ -227,14 +215,14 @@ function handleMouseMove(event)
 
 function handleMouseDown(event)
 {
-    
+   
     //Display CrossHair
     crossHair = new createjs.Bitmap(queue.getResult("crossHair"));
     crossHair.x = event.clientX-45;
     crossHair.y = event.clientY-45;
     stage.addChild(crossHair);
     createjs.Tween.get(crossHair).to({alpha: 0},1000);
-    
+   
     //Play Gunshot sound
     createjs.Sound.play("shot");
 
@@ -245,8 +233,8 @@ function handleMouseDown(event)
     //Obtain Shot position
     var shotX = Math.round(event.clientX);
     var shotY = Math.round(event.clientY);
-    var spriteX = Math.round(animation.x);
-    var spriteY = Math.round(animation.y);
+    var spriteX = Math.round(enemy.x);
+    var spriteY = Math.round(enemy.y);
 
     // Compute the X and Y distance using absolte value
     var distX = Math.abs(shotX - spriteX);
@@ -256,7 +244,7 @@ function handleMouseDown(event)
     if(distX < 30 && distY < 59 )
     {
     	//Hit
-    	stage.removeChild(animation);
+    	stage.removeChild(enemy);
     	batDeath();
     	score += 100;
     	scoreText.text = "1UP: " + score.toString();
@@ -268,7 +256,7 @@ function handleMouseDown(event)
 
     	//Create new enemy
     	var timeToCreate = Math.floor((Math.random()*3500)+1);
-	    setTimeout(createEnemy,timeToCreate);
+	    setTimeout(createEnemySprite, timeToCreate);
 
     } else
     {
@@ -286,7 +274,7 @@ function updateTime()
 	{
 		//End Game and Clean up
 		timerText.text = "GAME OVER";
-		stage.removeChild(animation);
+		stage.removeChild(enemy);
 		stage.removeChild(crossHair);
         createjs.Sound.removeSound("background");
         var si =createjs.Sound.play("gameOverSound");
@@ -299,25 +287,11 @@ function updateTime()
 	}
 }
 
-function getAssets(){
-    return [
-        {id: 'backgroundImage', src: '/client/assets/blueBack.jpg'},
-        {id: 'crossHair', src: '/client/assets/crosshair.png'},
-        {id: 'shot', src: '/client/assets/shot.mp3'},
-        {id: 'background', src: '/client/assets/countryside.mp3'},
-        {id: 'gameOverSound', src: '/client/assets/gameOver.mp3'},
-        {id: 'tick', src: '/client/assets/tick.mp3'},
-        {id: 'deathSound', src: '/client/assets/die.mp3'},
-        {id: 'batSpritesheet', src: '/client/assets/batSpritesheet.png'},
-        {id: 'batDeath', src: '/client/assets/batDeath.png'},
-    ]
-}
-
-
+//TEMPORARY TO SHOW STRUCTURE
 function drawSceneRectangles(){
-    drawRectangle(combatAreaCenter);
-    drawRectangle(combatAreaLeft);
-    drawRectangle(combatAreaRight);
+    drawRectangle(scene.combatAreaCenter);
+    drawRectangle(scene.combatAreaLeft);
+    drawRectangle(scene.combatAreaRight);
 
 
     var frame = {};

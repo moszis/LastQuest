@@ -1,16 +1,40 @@
-const path = require('path');
+const path        = require('path');
+var nodeExternals = require('webpack-node-externals');
 
-module.exports = {
-    entry: './client/scripts/src/game.js',
-    output: {
-        path: path.resolve(__dirname, 'client/scripts/dist'),
-        filename: 'game.dist.js'
+module.exports = [
+    {
+        name: "client",
+        entry: './client/scripts/src/game.js',
+        output: {
+            path: path.resolve(__dirname, 'dist'),
+            filename: 'client.dist.js'
+        },
+        module: {
+            loaders: [{
+                exclude: /node_modules/,
+                loader: 'babel-loader'
+            }]
+        }
     },
-    module: {
-        loaders: [{
-            exclude: /node_modules/,
-            loader: 'babel-loader'
-        }]
+    {
+        name: "server",
+        entry: './server.js',
+        context: __dirname,
+        node: {
+           __dirname: true
+        },
+        target: 'node',
+        output: {
+            path: path.resolve(__dirname, 'dist'),
+            filename: 'server.dist.js'
+        },
+        module: {
+            loaders: [{
+                exclude: /node_modules/,
+                loader: 'babel-loader'
+            }]
+        },
+        externals: [nodeExternals()]
     }
 
-}
+];

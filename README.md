@@ -5,6 +5,7 @@ npm init
 npm install webpack -g (NOT SURE IF THIS IS NEEDED; Next time will try without it)
 npm install webpack --save-dev
 
+npm install babel-core --save-dev
 npm install babel-preset-env --save-dev
 npm install babel-loader --save-dev
 

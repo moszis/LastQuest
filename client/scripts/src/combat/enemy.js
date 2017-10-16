@@ -1,4 +1,4 @@
-class GreeterModule {
+export default class Enemy {
     constructor(message) {
       this.message = message;
     }
@@ -7,5 +7,3 @@ class GreeterModule {
       alert(this.message);
     }
 };
-
-export default GreeterModule;
