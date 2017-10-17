@@ -1,6 +1,7 @@
 import Enemy from './combat/enemy';
 import Scene from './environment/scene'
-import AssetServices from './assets/testAssetServices';
+//import AssetServices from './assets/testAssetServices';
+import * as AssetServices from './assets/AssetServices';
 //********test */
 import omTest from './environment/objectManager';
 
@@ -39,9 +40,6 @@ var enemy;
 
 window.onload = function()
 {
-
-    alert(omTest());
-
     scene = new Scene(sceneInfo);
 
 
@@ -59,16 +57,13 @@ window.onload = function()
     queue.on("complete", queueLoaded, this);
     createjs.Sound.alternateExtensions = ["ogg"];
     
-    console.log("before");
+
+
     AssetServices.getAssetListByZone("arena")
-        .then(data => {
-            console.log('Data:', data)
-
-            queue.loadManifest(data);
-            queue.load();
-
-        })
-        console.log("after");
+    .then(data => {
+        queue.loadManifest(data);
+        queue.load();
+    })
 
 
     gameTimer = setInterval(updateTime, 1000);

@@ -5,6 +5,7 @@ const API_KEY = "?api-key=GET-YOUR-FREE-API-KEY:)"
 
 class AssetServices {
 
+
   getAssetListByZone(zoneCode){
     //var url = `${BASE_URL}/search/v2/articlesearch.json${API_KEY}`
     var url = BASE_URL+"zone:"+zoneCode;
