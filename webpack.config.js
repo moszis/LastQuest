@@ -4,7 +4,7 @@ var nodeExternals = require('webpack-node-externals');
 module.exports = [
     {
         name: "client",
-        entry: './client/scripts/src/game.js',
+        entry: './client/scripts/game.js',
         output: {
             path: path.resolve(__dirname, 'dist'),
             filename: 'client.dist.js'

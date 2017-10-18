@@ -1,4 +1,4 @@
-import RequestService from '../RequestService'
+import RequestService from '../_examples/RequestService'
 
 const BASE_URL = "http://localhost:5000/services/assets/"
 const API_KEY = "?api-key=GET-YOUR-FREE-API-KEY:)"

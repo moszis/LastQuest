@@ -1,7 +1,13 @@
 import Enemy from './combat/enemy';
 import Scene from './environment/scene'
-//import AssetServices from './assets/testAssetServices';
 import * as AssetServices from './assets/AssetServices';
+
+
+
+import AssetClassServices from './_examples/ClassAssetServices';
+import AssetFactory from './_examples/AssetFactory';
+
+
 //********test */
 import omTest from './environment/objectManager';
 
@@ -17,6 +23,7 @@ var stage;
 var context;
 var queue;
 
+var targetEnemySrite;
 
 
 var mouseXPosition;
@@ -59,6 +66,27 @@ window.onload = function()
     
 
 
+    //Using Factory Example
+    /*
+    const assetFactory = AssetFactory();
+    assetFactory.getAssetListByZone("arena")
+    .then(data => {
+        queue.loadManifest(data);
+        queue.load();
+    })
+    */
+
+    /*
+    //Using Class Example
+    AssetClassServices.getAssetListByZone("arena")
+    .then(data => {
+        queue.loadManifest(data);
+        queue.load();
+    })
+    */
+
+
+    //Using ES6 export module Example
     AssetServices.getAssetListByZone("arena")
     .then(data => {
         queue.loadManifest(data);
@@ -113,6 +141,8 @@ function queueLoaded(event)
 
     createEnemies();
 
+    createEnemySprite(enemy);
+
     // Add ticker
     createjs.Ticker.setFPS(15);
     createjs.Ticker.addEventListener('tick', stage);
@@ -133,18 +163,20 @@ function createEnemy(){
 function createEnemies()
 {
 
-	enemy = new createjs.Sprite(spriteSheet, "flap");
-    enemy.regX = 99;
-    enemy.regY = 58;
-    enemy.x = scene.combatAreaCenter.centerX;
-    enemy.y = scene.combatAreaCenter.centerY;
-    enemy.gotoAndPlay("flap");
-    enemy.addEventListener("click", handleClickEvent);
-    stage.addChildAt(enemy,1);
+	var enemy1 = new createjs.Sprite(spriteSheet, "flap");
+    enemy1.regX = 99;
+    enemy1.regY = 58;
+    enemy1.name = "Ma Ballz";
+    enemy1.x = scene.combatAreaCenter.centerX;
+    enemy1.y = scene.combatAreaCenter.centerY;
+    enemy1.gotoAndPlay("flap");
+    enemy1.addEventListener("click", handleClickEvent);
+    stage.addChildAt(enemy1,1);
 
     var enemy2 = new createjs.Sprite(spriteSheet, "flap");
     enemy2.regX = 99;
     enemy2.regY = 58;
+    enemy2.name = "Ma Ballz2";
     enemy2.x = scene.combatAreaLeft.centerX;
     enemy2.y = scene.combatAreaLeft.centerY;
     enemy2.gotoAndPlay("flap");
@@ -154,15 +186,39 @@ function createEnemies()
     var enemy3 = new createjs.Sprite(spriteSheet, "flap");
     enemy3.regX = 99;
     enemy3.regY = 58;
-    enemy3.x = scene.combatAreaLeft.centerX;
-    enemy3.y = scene.combatAreaLeft.centerY;
+    enemy3.name = "Ma Ballz3";
+    enemy3.x = scene.combatAreaRight.centerX;
+    enemy3.y = scene.combatAreaRight.centerY;
     enemy3.gotoAndPlay("flap");
     enemy3.addEventListener("click", handleClickEvent);
-    stage.addChildAt(enemy3, 2);
+    stage.addChildAt(enemy3, 3);
     
 }
 
-function handleClickEvent(){}
+function handleClickEvent(event){
+    
+    targetEnemySprite = stage.getChildByName(event.target.name);
+
+    
+
+    enemyDeath(targetEnemySprite);
+
+
+    stage.removeChild(targetEnemySprite);
+
+
+}
+
+function enemyDeath(enemy)
+{
+  let deathAnimation = new createjs.Sprite(batDeathSpriteSheet, "die");
+  deathAnimation.regX = 99;
+  deathAnimation.regY = 58;
+  deathAnimation.x = enemy.x;
+  deathAnimation.y = enemy.y;
+  deathAnimation.gotoAndPlay("die");
+  stage.addChild(deathAnimation);
+}
 
 
 function createEnemySprite(enemy){
@@ -192,8 +248,8 @@ function tickEvent()
 {
 
 
-	enemy.x = enemyXPos;
-	enemy.y = enemyYPos;
+	//enemy.x = enemyXPos;
+	//enemy.y = enemyYPos;
     
 
     drawSceneRectangles();
@@ -217,7 +273,7 @@ function handleMouseDown(event)
     crossHair.y = event.clientY-45;
     stage.addChild(crossHair);
     createjs.Tween.get(crossHair).to({alpha: 0},1000);
-   
+
     //Play Gunshot sound
     createjs.Sound.play("shot");
 

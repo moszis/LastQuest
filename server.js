@@ -12,8 +12,8 @@ var server = http.Server(app);
 /***************************/
 //TODO: Temporarily doing this manually until I figure out how to prevent webpack
 //      from resetting __dirname
-__dirname = path.join(path.resolve(), '../');
-
+/**************************/
+__dirname = path.resolve();
 
 
 app.set('port', 5000);
