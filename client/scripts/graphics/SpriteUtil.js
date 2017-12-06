@@ -24,8 +24,16 @@ export default class SpriteUtil {
 
     }
 
-    createSprite(){ 
-
+    createSprite(spriteSheet, animName){ 
+        this.sprite = new this.createjs.Sprite(this.spriteSheet, "flap");
+        this.sprite.regX = 99;
+        this.sprite.regY = 58;
+        this.sprite.name = "spriteNameA";
+        this.sprite.x = scene.combatArea[combatArea].centerX;
+        this.sprite.y = scene.combatArea[combatArea].centerY;
+        this.sprite.gotoAndPlay("flap");
+        this.sprite.on("click", this.leftClick);
+        this.sprite.Enemy = this;
     }
 
 
