@@ -20,3 +20,16 @@ class AssetServices {
 }
 
 export default new AssetServices();
+
+/*
+   Example on how to use outside:
+
+import AssetClassServices from './_examples/ClassAssetServices';
+
+    AssetClassServices.getAssetListByZone("arena")
+    .then(data => {
+        queue.loadManifest(data);
+        queue.load();
+    })
+
+*/

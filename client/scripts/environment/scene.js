@@ -1,22 +1,32 @@
+let instance = null;
+
 export default class Scene{    
 
-      constructor(sceneProperties) {
-
-        this.zoneCode = sceneProperties.zoneCode;
-        this.eventCode = sceneProperties.eventCode;
-
-        //Physical client system parameters
-        this.windowHeight = window.innerHeight - window.innerHeight/20; 
-        this.windowWidth  = window.innerWidth - window.innerWidth/20;
-
-        //Canvas and visual game component dimentions
-        if(this.eventCode === "combat"){
-          this.setCombatDimentions();
-        }
-
+    constructor() {
+      if (!instance) {
+        instance = this;
       }
+      
+      return instance;
+    }
 
-      setCombatDimentions(){
+    setNew(sceneProperties){
+      this.zoneCode = sceneProperties.zoneCode;
+      this.eventCode = sceneProperties.eventCode;
+      this.combatArea = [];
+      
+      //Physical client system parameters
+      this.windowHeight = window.innerHeight - window.innerHeight/20; 
+      this.windowWidth  = window.innerWidth - window.innerWidth/20;
+
+      //Canvas and visual game component dimentions
+      if(this.eventCode === "combat"){
+        this.setCombatDimentions();
+      }
+    }
+
+
+    setCombatDimentions(){
     
         this.combatAreaWidth  = this.windowWidth/4;
         this.combatAreaHeight = this.combatAreaWidth;
@@ -45,6 +55,8 @@ export default class Scene{
           y       : y
       }
 
+      this.combatArea[0] = this.combatAreaCenter;
+
     }
 
     setCombatAreaLeft(){
@@ -68,6 +80,7 @@ export default class Scene{
           y       : y
       }
 
+      this.combatArea[1] = this.combatAreaLeft;
     }
 
     setCombatAreaRight(){
@@ -89,5 +102,6 @@ export default class Scene{
           y       : y
       }
 
+      this.combatArea[2] = this.combatAreaRight;
     }    
 };

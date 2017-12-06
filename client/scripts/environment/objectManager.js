@@ -1,14 +1,37 @@
-//The purpose of this module is to manage scene objects
-//and provide functions to easily access and maintain game objects globally.
+let instance = null;
 
-var counter = 1;
+class ObjectManager {
+  
+  constructor(){
+    
+    if (!instance) {
+      instance = this;
+    }
+    
+    return instance;
+  }
 
-export default function omTest(){
+  setScene(scene){
+    this.scene = scene;
+  }
 
-  counter++;
+  setStage(stage){
+    this.stage = stage;
+  }
 
-  return counter;
+  setQueue(queue){
+    this.queue = queue;
+  }
+
+  setCreatejs(createjs){
+    this.createjs = createjs;
+  }
+
+
 }
+  
+export default ObjectManager;
+
 
 
 

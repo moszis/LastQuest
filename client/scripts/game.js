@@ -1,147 +1,91 @@
-import Enemy from './combat/enemy';
-import Scene from './environment/scene'
 import * as AssetServices from './assets/AssetServices';
+import Scene         from './environment/Scene';
+import ObjectManager from './environment/ObjectManager';
+import SpawnManager  from './combat/SpawnManager';
 
+var objectManager = new ObjectManager();
+var scene         = new Scene();
 
-
-import AssetClassServices from './_examples/ClassAssetServices';
-import AssetFactory from './_examples/AssetFactory';
-
-
-//********test */
-import omTest from './environment/objectManager';
-
-
-//This should be passed on page request
-var sceneInfo = {
-    zoneCode : "testCombatArea",
-    eventCode : "combat"
-}
-
-var scene;
 var stage;
-var context;
 var queue;
 
-var targetEnemySrite;
+var spawnManager;
 
 
-var mouseXPosition;
-var mouseYPosition;
-var batImage;
-var deathAnimation;
-var spriteSheet;
-var batDeathSpriteSheet;
-var enemyXPos=100;
-var enemyYPos=100;
-var enemyXSpeed = 1.5;
-var enemyYSpeed = 1.75;
+//TEMPORARY ***********
+var context;
 var score = 0;
 var scoreText;
 var gameTimer;
 var gameTime = 0;
 var timerText;
-
 var crossHair;
-var enemy;
+
+
+//This should be defined on zone change request
+var sceneInfo = {
+    zoneCode : "testCombatArea",
+    eventCode : "combat"
+}
+//***************/
+
 
 window.onload = function()
 {
-    scene = new Scene(sceneInfo);
 
-
-    var canvas = document.getElementById('mainCanvas');
-    context = canvas.getContext('2d');
-    context.canvas.width  = scene.windowWidth;
-    context.canvas.height = scene.windowHeight;
-
+    scene.setNew(sceneInfo);
+   
     stage = new createjs.Stage("mainCanvas");
-
-
 
     queue = new createjs.LoadQueue(false);
     queue.installPlugin(createjs.Sound);
+    queue.on("progress", queueProgress, this);
+    queue.on("error", queueError, this);
     queue.on("complete", queueLoaded, this);
+
+
     createjs.Sound.alternateExtensions = ["ogg"];
     
 
-
-    //Using Factory Example
-    /*
-    const assetFactory = AssetFactory();
-    assetFactory.getAssetListByZone("arena")
-    .then(data => {
-        queue.loadManifest(data);
-        queue.load();
-    })
-    */
-
-    /*
-    //Using Class Example
-    AssetClassServices.getAssetListByZone("arena")
-    .then(data => {
-        queue.loadManifest(data);
-        queue.load();
-    })
-    */
-
-
-    //Using ES6 export module Example
+    //Using ES6 export module
     AssetServices.getAssetListByZone("arena")
     .then(data => {
         queue.loadManifest(data);
         queue.load();
     })
 
+    stage.update();
 
     gameTimer = setInterval(updateTime, 1000);
+
 
 }
 
 
+function queueProgress(event){}
 
-function queueLoaded(event)
-{
+function queueError(event){
+    console.log("QUEUE ERROR!!");
+}
 
+
+function queueLoaded(event){
+
+    objectManager.setScene(scene);
+    objectManager.setStage(stage);
+    objectManager.setQueue(queue);
+    objectManager.setCreatejs(createjs);
+
+
+    spawnManager = new SpawnManager();
 
     // Add background image
     var backgroundImage = new createjs.Bitmap(queue.getResult("backgroundImage"))
     stage.addChild(backgroundImage);
     
 
-    //Add Score
-    scoreText = new createjs.Text("1UP: " + score.toString(), "36px Arial", "#FFF");
-    scoreText.x = 10;
-    scoreText.y = 10;
-    stage.addChild(scoreText);
-
-    //Ad Timer
-    timerText = new createjs.Text("Time: " + gameTime.toString(), "36px Arial", "#FFF");
-    timerText.x = 800;
-    timerText.y = 10;
-    stage.addChild(timerText);
-
     // Play background sound
     createjs.Sound.play("background", {loop: -1});
-
-    // Create bat spritesheet
-    spriteSheet = new createjs.SpriteSheet({
-        // x, y, width, height, imageIndex*, regX*, regY*
-        "images": [queue.getResult('batSpritesheet')],
-        "frames": {"width": 198, "height": 117},
-        "animations": { "flap": [0,4] }
-    });
-
-    // Create bat death spritesheet
-    batDeathSpriteSheet = new createjs.SpriteSheet({
-    	"images": [queue.getResult('batDeath')],
-    	"frames": {"width": 198, "height" : 148},
-    	"animations": {"die": [0,7, false,1 ] }
-    });
-
-    createEnemies();
-
-    createEnemySprite(enemy);
 
     // Add ticker
     createjs.Ticker.setFPS(15);
@@ -153,120 +97,48 @@ function queueLoaded(event)
     window.onmousedown = handleMouseDown;
 
 
-}
-
-function createEnemy(){
-  var enemy = new Enemy(sceneInfo);
-
-}
-
-function createEnemies()
-{
-
-	var enemy1 = new createjs.Sprite(spriteSheet, "flap");
-    enemy1.regX = 99;
-    enemy1.regY = 58;
-    enemy1.name = "Ma Ballz";
-    enemy1.x = scene.combatAreaCenter.centerX;
-    enemy1.y = scene.combatAreaCenter.centerY;
-    enemy1.gotoAndPlay("flap");
-    enemy1.addEventListener("click", handleClickEvent);
-    stage.addChildAt(enemy1,1);
-
-    var enemy2 = new createjs.Sprite(spriteSheet, "flap");
-    enemy2.regX = 99;
-    enemy2.regY = 58;
-    enemy2.name = "Ma Ballz2";
-    enemy2.x = scene.combatAreaLeft.centerX;
-    enemy2.y = scene.combatAreaLeft.centerY;
-    enemy2.gotoAndPlay("flap");
-    enemy2.addEventListener("click", handleClickEvent);
-    stage.addChildAt(enemy2, 2);
-
-    var enemy3 = new createjs.Sprite(spriteSheet, "flap");
-    enemy3.regX = 99;
-    enemy3.regY = 58;
-    enemy3.name = "Ma Ballz3";
-    enemy3.x = scene.combatAreaRight.centerX;
-    enemy3.y = scene.combatAreaRight.centerY;
-    enemy3.gotoAndPlay("flap");
-    enemy3.addEventListener("click", handleClickEvent);
-    stage.addChildAt(enemy3, 3);
     
+            /* TEMPORARY UNTIL USELESS*************/
+            //Add Score
+            scoreText = new createjs.Text("1UP: " + score.toString(), "36px Arial", "#FFF");
+            scoreText.x = 10;
+            scoreText.y = 10;
+            stage.addChild(scoreText);
+            //Ad Timer
+            timerText = new createjs.Text("Time: " + gameTime.toString(), "36px Arial", "#FFF");
+            timerText.x = 800;
+            timerText.y = 10;
+            stage.addChild(timerText);
+            /* TEMPORARY TO DRAW COMBAT STRUCTURE*************/
+            var canvas = document.getElementById('mainCanvas');
+            context = canvas.getContext('2d');
+            context.canvas.width  = scene.windowWidth;
+            context.canvas.height = scene.windowHeight;
+            /*****************************************/
 }
 
-function handleClickEvent(event){
-    
-    targetEnemySprite = stage.getChildByName(event.target.name);
+
+
+
+function tickEvent(){
+
+    spawnManager.processSpawnTick();
 
     
-
-    enemyDeath(targetEnemySprite);
-
-
-    stage.removeChild(targetEnemySprite);
-
-
-}
-
-function enemyDeath(enemy)
-{
-  let deathAnimation = new createjs.Sprite(batDeathSpriteSheet, "die");
-  deathAnimation.regX = 99;
-  deathAnimation.regY = 58;
-  deathAnimation.x = enemy.x;
-  deathAnimation.y = enemy.y;
-  deathAnimation.gotoAndPlay("die");
-  stage.addChild(deathAnimation);
-}
-
-
-function createEnemySprite(enemy){
-	enemy = new createjs.Sprite(spriteSheet, "flap");
-    enemy.regX = 99;
-    enemy.regY = 58;
-    enemy.x = scene.combatAreaCenter.centerX;
-    enemy.y = scene.combatAreaCenter.centerY;
-    enemy.gotoAndPlay("flap");
-    enemy.addEventListener("click", handleClickEvent);
-    stage.addChildAt(enemy,1);
-}
-
-
-function batDeath()
-{
-  deathAnimation = new createjs.Sprite(batDeathSpriteSheet, "die");
-  deathAnimation.regX = 99;
-  deathAnimation.regY = 58;
-  deathAnimation.x = scene.combatAreaCenter.centerX;
-  deathAnimation.y = scene.combatAreaCenter.centerY;
-  deathAnimation.gotoAndPlay("die");
-  stage.addChild(deathAnimation);
-}
-
-function tickEvent()
-{
-
-
-	//enemy.x = enemyXPos;
-	//enemy.y = enemyYPos;
-    
-
     drawSceneRectangles();
-	
 }
 
 
-function handleMouseMove(event)
-{
+function handleMouseMove(event){
     crossHair.x = event.clientX-45;
     crossHair.y = event.clientY-45;
 }
 
 
-function handleMouseDown(event)
-{
+function handleMouseDown(event){
    
+    
+
     //Display CrossHair
     crossHair = new createjs.Bitmap(queue.getResult("crossHair"));
     crossHair.x = event.clientX-45;
@@ -277,6 +149,8 @@ function handleMouseDown(event)
     //Play Gunshot sound
     createjs.Sound.play("shot");
 
+    setTimeout(()=> stage.removeChild(crossHair), 50);
+    /*
     //Increase speed of enemy slightly
     enemyXSpeed *= 1.05;
     enemyYSpeed *= 1.06;
@@ -284,6 +158,7 @@ function handleMouseDown(event)
     //Obtain Shot position
     var shotX = Math.round(event.clientX);
     var shotY = Math.round(event.clientY);
+
     var spriteX = Math.round(enemy.x);
     var spriteY = Math.round(enemy.y);
 
@@ -307,7 +182,7 @@ function handleMouseDown(event)
 
     	//Create new enemy
     	var timeToCreate = Math.floor((Math.random()*3500)+1);
-	    setTimeout(createEnemySprite, timeToCreate);
+	    //setTimeout(createEnemySprite, timeToCreate);
 
     } else
     {
@@ -316,16 +191,16 @@ function handleMouseDown(event)
     	scoreText.text = "1UP: " + score.toString();
 
     }
+
+    */
 }
 
-function updateTime()
-{
+function updateTime(){
 	gameTime += 1;
 	if(gameTime > 60)
 	{
 		//End Game and Clean up
 		timerText.text = "GAME OVER";
-		stage.removeChild(enemy);
 		stage.removeChild(crossHair);
         createjs.Sound.removeSound("background");
         var si =createjs.Sound.play("gameOverSound");
@@ -334,7 +209,7 @@ function updateTime()
 	else
 	{
 		timerText.text = "Time: " + gameTime
-    createjs.Sound.play("tick");
+        createjs.Sound.play("tick");
 	}
 }
 
@@ -344,7 +219,6 @@ function drawSceneRectangles(){
     drawRectangle(scene.combatAreaLeft);
     drawRectangle(scene.combatAreaRight);
 
-
     var frame = {};
     frame.x = 0;
     frame.y = 0;
@@ -352,7 +226,6 @@ function drawSceneRectangles(){
     frame.width = context.canvas.width;
     drawRectangle(frame);
 }
-
 
 function drawRectangle(coordinates){
 

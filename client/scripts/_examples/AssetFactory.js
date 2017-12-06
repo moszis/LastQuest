@@ -20,3 +20,17 @@ export default () => {
     }
 }
 
+
+/*
+  Example how to use from outside:
+
+import AssetFactory from './_examples/AssetFactory';
+
+    const assetFactory = AssetFactory();
+    assetFactory.getAssetListByZone("arena")
+    .then(data => {
+        queue.loadManifest(data);
+        queue.load();
+    })
+
+*/
