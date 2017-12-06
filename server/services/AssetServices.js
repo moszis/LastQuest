@@ -13,6 +13,7 @@ export default class AssetServices{
                 {id: 'deathSound', src: '/client/assets/die.mp3'},
                 {id: 'batSpritesheet', src: '/client/assets/batSpritesheet.png'},
                 {id: 'batDeath', src: '/client/assets/batDeath.png'},
+                {id: 'batSS', src: '/client/assets/batSS.png'}
             ];
         }
     

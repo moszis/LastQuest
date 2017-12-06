@@ -35,6 +35,6 @@ export default class SpawnManager {
 
     spawnEnemy(combatArea){
         var enemy = new Enemy();
-        enemy.create(combatArea);
+        enemy.spawn(combatArea);
     }
 }
