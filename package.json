@@ -9,7 +9,6 @@
   "author": "Sergey Pugach",
   "license": "ISC",
   "dependencies": {
-    "createjs": "^1.0.1",
     "express": "^4.16.1"
   },
   "devDependencies": {

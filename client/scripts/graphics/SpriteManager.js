@@ -6,21 +6,21 @@ const scene         = new Scene();
 
 let instance = null;
 
-export default class SpriteUtil {
+export default class SpriteManager {
     
     constructor() {
 
         if (!instance) {
-
-            this.stage    = objectManager.stage;
-            this.queue    = objectManager.queue;
-            this.createjs = objectManager.createjs;
-
             instance = this;
         }
           
         return instance;
 
+    }
+
+    initNew(){
+        this.createjs = objectManager.createjs;
+        this.queue    = objectManager.queue;
     }
 
     createSpriteSheet(mobSpriteSheet){
@@ -37,6 +37,7 @@ export default class SpriteUtil {
         return spriteSheet;
     }
 
+    //TODO: instead of onclick pass event list
     createSprite(spriteSheet, combatArea, name, onClick){ 
 
         let sprite = new this.createjs.Sprite(spriteSheet);
@@ -48,6 +49,15 @@ export default class SpriteUtil {
         sprite.on("click", onClick);
 
         return sprite;
+    }
+
+
+    playAnimation(sprite, animationName, onComplete){
+
+        if(onComplete != undefined){
+            sprite.on("animationend", () => onComplete());
+        }
+        sprite.gotoAndPlay(animationName);
     }
 
 

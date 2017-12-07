@@ -1,9 +1,10 @@
-import ObjectManager from '../environment/ObjectManager';
 import Scene         from '../environment/Scene';
-import SpriteUtil    from '../graphics/SpriteUtil';
+import SpriteManager from '../graphics/SpriteManager';
+import StageManager  from '../graphics/StageManager';
 
-const objectManager = new ObjectManager();
 const scene         = new Scene();
+const stageManager  = new StageManager();
+const spriteManager = new SpriteManager();
 
 export default class Enemy {
 
@@ -11,61 +12,44 @@ export default class Enemy {
 
       this.mob = mob;
 
-      this.stage = objectManager.stage;
-
       this.setSpriteSheet();
-
-      this.combatArea;
 
     }
 
 
     spawn(combatArea){
 
-      const spriteUtil    = new SpriteUtil();
-
       this.combatArea = combatArea;
 
+      this.sprite = spriteManager.createSprite(this.spriteSheet, this.combatArea, this.mob.mobName, this.leftClick.bind(this));
 
-      this.sprite = spriteUtil.createSprite(this.spriteSheet, this.combatArea, this.mob.mobName, this.leftClick);
+      spriteManager.playAnimation(this.sprite, "idle");
 
-      //TODO: This needs to be abtructed by SpriteUtil
-      this.sprite.gotoAndPlay("idle");
-
-      this.sprite.Enemy = this;
-
-      //TODO: This should probably be handled elsewhere..
-      this.stage.addChild(this.sprite);
+      stageManager.addChild(this.sprite);
       
       scene.combatArea[this.combatArea].isEnemy = true;
       scene.combatArea[this.combatArea].Enemy = this;
 
     }
 
-    //TODO: This needs to be abtructed by SpriteUtil
-    // SpriteUtil.playAnimation(this.sprite, "death", this.destroy());
+
     kill(){
-        this.sprite.on("animationend", () => this.destroy());
-        this.sprite.gotoAndPlay("death");
+      spriteManager.playAnimation(this.sprite, "death", this.destroy.bind(this));
     }
 
     destroy(){
-
-      this.stage.removeChild(this.sprite);
+      stageManager.removeChild(this.sprite);
       scene.combatArea[this.combatArea].isEnemy = false;
       scene.combatArea[this.combatArea].Enemy = null;
-
-      console.log(this.stage);
     }
 
     leftClick(event){
 
-      this.Enemy.kill();
+      this.kill();
 
     }
 
     setSpriteSheet(){
-      const spriteUtil    = new SpriteUtil();
-      this.spriteSheet = spriteUtil.createSpriteSheet(this.mob.mobSpriteSheet);
+      this.spriteSheet = spriteManager.createSpriteSheet(this.mob.mobSpriteSheet);
     }
 };

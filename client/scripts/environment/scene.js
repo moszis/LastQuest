@@ -1,3 +1,8 @@
+import Zone            from './Zone';
+import AssetLoader     from '../assets/AssetLoader';
+import StageManager    from '../graphics/StageManager';
+import GraphicsManager from '../graphics/GraphicsManager';
+
 let instance = null;
 
 export default class Scene{    
@@ -10,7 +15,7 @@ export default class Scene{
       return instance;
     }
 
-    setNew(sceneProperties){
+    initNew(sceneProperties){
       this.zoneCode = sceneProperties.zoneCode;
       this.eventCode = sceneProperties.eventCode;
       this.combatArea = [];
@@ -25,6 +30,17 @@ export default class Scene{
       }
     }
 
+    setBackground(){
+
+      let stageManager    = new StageManager();
+      let graphicsManager = new GraphicsManager();
+      let zone = new Zone();
+      let assetLoader = new AssetLoader();
+
+      let backgroundImage = graphicsManager.createBitmap(assetLoader.getAsset(zone.zoneBackgroundName));
+      
+      stageManager.addChild(backgroundImage);
+    }
 
     setCombatDimentions(){
     

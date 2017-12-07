@@ -1,11 +1,9 @@
-import Enemy from './Enemy';
-import ObjectManager from '../environment/ObjectManager';
-import Scene         from '../environment/Scene';
-import Zone          from '../environment/Zone';
+import Enemy  from './Enemy';
+import Scene  from '../environment/Scene';
+import Zone   from '../environment/Zone';
 
-const objectManager = new ObjectManager();
-const scene         = new Scene();
-const zone          = new Zone();
+const scene = new Scene();
+const zone  = new Zone();
 
 export default class SpawnManager {
     
