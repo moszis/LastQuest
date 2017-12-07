@@ -7,32 +7,15 @@ const scene         = new Scene();
 
 export default class Enemy {
 
-    constructor() {
+    constructor(mob) {
 
-      this.stage    = objectManager.stage;
-      this.queue    = objectManager.queue;
-      this.createjs = objectManager.createjs;
+      this.mob = mob;
 
-      this.spriteSheet = new this.createjs.SpriteSheet({
-          "images": [this.queue.getResult('batSS')],
-          "frames": {"width": 198, "height": 120},
-          "animations": {         
-              // start, end, next*, speed*
-              idle : [0,4],
-              die   : [5,9, false, 0.3 ]
-          }
-      });
+      this.stage = objectManager.stage;
 
-      /*
-      this.deathSpriteSheet = new this.createjs.SpriteSheet({
-        "images": [this.queue.getResult('batSS')],
-        "frames": {"width": 198, "height" : 120},
-        "animations": {"death": [5,9, false, 1 ] }
-      });
-*/
+      this.setSpriteSheet();
+
       this.combatArea;
-
-      this.name = "Enemy!";
 
     }
 
@@ -43,18 +26,10 @@ export default class Enemy {
 
       this.combatArea = combatArea;
 
-      this.sprite = spriteUtil.createSprite(this.spriteSheet, combatArea, this.leftClick);
 
-     /*
-      this.sprite = new this.createjs.Sprite(this.spriteSheet);
-      this.sprite.regX = 99;
-      this.sprite.regY = 58;
-      this.sprite.name = "spriteNameA";
-      this.sprite.x = scene.combatArea[combatArea].centerX;
-      this.sprite.y = scene.combatArea[combatArea].centerY;
-      this.sprite.on("click", this.leftClick);
-     */
+      this.sprite = spriteUtil.createSprite(this.spriteSheet, this.combatArea, this.mob.mobName, this.leftClick);
 
+      //TODO: This needs to be abtructed by SpriteUtil
       this.sprite.gotoAndPlay("idle");
 
       this.sprite.Enemy = this;
@@ -67,30 +42,30 @@ export default class Enemy {
 
     }
 
-
+    //TODO: This needs to be abtructed by SpriteUtil
+    // SpriteUtil.playAnimation(this.sprite, "death", this.destroy());
     kill(){
-
         this.sprite.on("animationend", () => this.destroy());
-        this.sprite.gotoAndPlay("die");
+        this.sprite.gotoAndPlay("death");
     }
 
     destroy(){
-
-      console.log("DESTROYING!!!!!");
 
       this.stage.removeChild(this.sprite);
       scene.combatArea[this.combatArea].isEnemy = false;
       scene.combatArea[this.combatArea].Enemy = null;
 
-        console.log(this.stage);
+      console.log(this.stage);
     }
 
     leftClick(event){
 
-      console.log(this);
-      console.log(this.Enemy);
-
       this.Enemy.kill();
 
+    }
+
+    setSpriteSheet(){
+      const spriteUtil    = new SpriteUtil();
+      this.spriteSheet = spriteUtil.createSpriteSheet(this.mob.mobSpriteSheet);
     }
 };

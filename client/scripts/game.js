@@ -1,10 +1,12 @@
 import * as AssetServices from './assets/AssetServices';
+import Zone          from './environment/Zone';
 import Scene         from './environment/Scene';
 import ObjectManager from './environment/ObjectManager';
 import SpawnManager  from './combat/SpawnManager';
 
 var objectManager = new ObjectManager();
 var scene         = new Scene();
+var zone          = new Zone();
 
 var stage;
 var queue;
@@ -29,12 +31,46 @@ var sceneInfo = {
 }
 //***************/
 
+var zoneObject = {
+    zoneId : 1,
+    zoneCode : "testCombatArea",
+    zoneBackgroundName : "backgroundImage",
+    zoneBackgroundImg  : "blueBack.jpg",
+    zoneSoundName      : "countryside",
+    mobs : [
+        {
+            mobId : 1,
+            mobName : "bat",
+            mobSpriteSheet : {
+                ssName : "batSS",
+                ssFile : "batSS.png",
+                frameWidth : 198,
+                frameHeight : 120, 
+                animations: {
+                    idle  : {
+                        frames: [0,1,2,3,4],
+                        next: true,
+                        speed: 1
+                    },
+                    death : {
+                        frames: [5,6,7,8,9],
+                        next: false,
+                        speed: 0.3
+                    }
+                }
+            },
+            mobDeathSound : "batDeathSound"
+        }
+    ]
+
+}
 
 window.onload = function()
 {
 
     scene.setNew(sceneInfo);
-   
+    zone.setNew(zoneObject);
+
     stage = new createjs.Stage("mainCanvas");
 
     queue = new createjs.LoadQueue(false);
@@ -48,16 +84,15 @@ window.onload = function()
     
 
     //Using ES6 export module
-    AssetServices.getAssetListByZone("arena")
+    AssetServices.getAssetListByZone(zoneObject.zoneCode)
     .then(data => {
         queue.loadManifest(data);
         queue.load();
     })
 
-    stage.update();
+    //stage.update();
 
     gameTimer = setInterval(updateTime, 1000);
-
 
 }
 
@@ -76,16 +111,15 @@ function queueLoaded(event){
     objectManager.setQueue(queue);
     objectManager.setCreatejs(createjs);
 
-
     spawnManager = new SpawnManager();
 
     // Add background image
-    var backgroundImage = new createjs.Bitmap(queue.getResult("backgroundImage"))
+    var backgroundImage = new createjs.Bitmap(queue.getResult(zoneObject.zoneBackgroundName))
     stage.addChild(backgroundImage);
     
 
     // Play background sound
-    createjs.Sound.play("background", {loop: -1});
+    createjs.Sound.play(zoneObject.zoneSoundName, {loop: -1});
 
     // Add ticker
     createjs.Ticker.setFPS(15);
@@ -151,9 +185,6 @@ function handleMouseDown(event){
 
     setTimeout(()=> stage.removeChild(crossHair), 50);
     /*
-    //Increase speed of enemy slightly
-    enemyXSpeed *= 1.05;
-    enemyYSpeed *= 1.06;
 
     //Obtain Shot position
     var shotX = Math.round(event.clientX);

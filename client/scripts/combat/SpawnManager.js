@@ -1,9 +1,11 @@
 import Enemy from './Enemy';
 import ObjectManager from '../environment/ObjectManager';
 import Scene         from '../environment/Scene';
+import Zone          from '../environment/Zone';
 
 const objectManager = new ObjectManager();
 const scene         = new Scene();
+const zone          = new Zone();
 
 export default class SpawnManager {
     
@@ -34,7 +36,12 @@ export default class SpawnManager {
     }
 
     spawnEnemy(combatArea){
-        var enemy = new Enemy();
+        let mob = this.getNextMob();
+        var enemy = new Enemy(mob);
         enemy.spawn(combatArea);
+    }
+
+    getNextMob(){
+        return zone.mobs[0];
     }
 }
