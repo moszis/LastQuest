@@ -72,7 +72,8 @@ var zoneObject = {
 }
 
 window.onload = function()
-{
+{  
+
     objectManager.setCreatejs(createjs);
 
     assetLoader = new AssetLoader(queueLoaded);
