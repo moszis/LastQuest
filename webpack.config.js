@@ -17,6 +17,23 @@ module.exports = [
         }
     },
     {
+        name: "menu",
+        entry: './client/scripts/ui/ui.js',
+        output: {
+            path: path.resolve(__dirname, 'dist'),
+            filename: 'ui.dist.js'
+        },
+        module: {
+            loaders: [{
+                exclude: /node_modules/,
+                loader: 'babel-loader',
+                query: {
+                    presets: ['env', 'react']
+                }
+            }]
+        }
+    },
+    {
         name: "server",
         entry: './server.js',
         context: __dirname,
