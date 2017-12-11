@@ -47,6 +47,7 @@ var zoneObject = {
         {
             mobId : 1,
             mobName : "bat",
+            mobHeath : 100,
             mobSpriteSheet : {
                 ssName : "batSS",
                 ssFile : "batSS.png",
@@ -62,6 +63,98 @@ var zoneObject = {
                         frames: [5,6,7,8,9],
                         next: false,
                         speed: 0.3
+                    }
+                }
+            },
+            mobDeathSound : "batDeathSound"
+        },
+        {
+            mobId : 2,
+            mobName : "mino",
+            mobHeath : 100,
+            mobSpriteSheet : {
+                ssName : "test",
+                ssFile : "test.png",
+                frameWidth : 347,
+                frameHeight : 260, 
+                animations: {
+                    idle  : {
+                        frames: [0,1],
+                        next: true,
+                        speed: 0.25
+                    },
+                    death : {
+                        frames: [3,4,5],
+                        next: false,
+                        speed: 1
+                    }
+                }
+            },
+            mobDeathSound : "batDeathSound"
+        },
+        {
+            mobId : 3,
+            mobName : "mino",
+            mobHeath : 100,
+            mobSpriteSheet : {
+                ssName : "test1",
+                ssFile : "test1.png",
+                frameWidth : 1265,
+                frameHeight : 729, 
+                animations: {
+                    idle  : {
+                        frames: [0,1],
+                        next: true,
+                        speed: 0.25
+                    },
+                    attack : {
+                        frames: [3,4,5,6,7,6,5,4,3,2,1],
+                        next: false,
+                        speed: 0.8
+                    },
+                    stagger : {
+                        frames: [8,9],
+                        next: false,
+                        speed:0.8
+                    },
+                    death : {
+                        frames: [8,9,8,9,8,9,9,9],
+                        next: false,
+                        speed: 0.8
+                    }
+                }
+            },
+            mobDeathSound : "batDeathSound"
+        },
+        {
+            mobId : 4,
+            mobName : "testb",
+            mobHeath : 100,
+            mobSpriteSheet : {
+                ssName : "testb",
+                ssFile : "testb.png",
+                frameWidth : 1186,
+                frameHeight : 949, 
+                animations: {
+                    idle  : {
+                        frames: [0,1,2,3],
+                        next: true,
+                        speed: 2
+                    },
+                    attack : {
+                        frames: [10,11,12,13,14,15,16,17,18,19],
+                        next: false,
+                        speed: 0.8
+                    },
+                    stagger : {
+                        frames: [8,9],
+                        next: false,
+                        speed:1
+                    },
+                    death : {
+                        frames: [10,11,12,13,14,15,16,17,18,19],
+                        next: false,
+                        speed: 1
                     }
                 }
             },

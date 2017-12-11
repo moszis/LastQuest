@@ -30,6 +30,7 @@ export default class SpriteManager {
             "frames": {"width": mobSpriteSheet.frameWidth, "height": mobSpriteSheet.frameHeight},
             "animations": {         
               idle: mobSpriteSheet.animations.idle,
+              attack: mobSpriteSheet.animations.attack,
               death: mobSpriteSheet.animations.death,
             }
         });
@@ -37,12 +38,22 @@ export default class SpriteManager {
         return spriteSheet;
     }
 
-    //TODO: instead of onclick pass event list
+    //TODO: instead of onclick pass mouse event map
+    //TODO: build scaling functionality.
+    //TODO: pass in mob object instead of just name
+    //TODO: add relative size to mob (size relative to average mob)
+    //TODO: calculate scaleX and scaleY relative to combat area
+    //TODO: calculate regX and regY relative to frame size and scale multiplier
     createSprite(spriteSheet, combatArea, name, onClick){ 
+
+        console.log(scene.combatAreaWidth+" : "+scene.combatAreaHeight);
+        console.log(scene.combatAreaWidth+" : "+scene.combatAreaHeight);
 
         let sprite = new this.createjs.Sprite(spriteSheet);
         sprite.regX = spriteSheet._frameWidth/2;
         sprite.regY = spriteSheet._frameHeight/2;
+        sprite.scaleX = 0.7;
+        sprite.scaleY = 0.7;
         sprite.name = name;
         sprite.x = scene.combatArea[combatArea].centerX;
         sprite.y = scene.combatArea[combatArea].centerY;
