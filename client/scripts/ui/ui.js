@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import Abilities from './abilities/Abilities';
+import AbilityBar from './abilities/AbilityBar';
 
 class UI extends Component {
 
@@ -8,7 +8,7 @@ class UI extends Component {
     render() {
         return (
             <div>
-              <Abilities />
+              <AbilityBar/>
             </div>
         );
     }

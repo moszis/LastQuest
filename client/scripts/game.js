@@ -48,6 +48,7 @@ var zoneObject = {
             mobId : 1,
             mobName : "bat",
             mobHeath : 100,
+            mobSizeMultiplier : 0.5,
             mobSpriteSheet : {
                 ssName : "batSS",
                 ssFile : "batSS.png",
@@ -57,6 +58,11 @@ var zoneObject = {
                     idle  : {
                         frames: [0,1,2,3,4],
                         next: true,
+                        speed: 1
+                    },
+                    attack : {
+                        frames: [],
+                        next: false,
                         speed: 1
                     },
                     death : {
@@ -72,6 +78,7 @@ var zoneObject = {
             mobId : 2,
             mobName : "mino",
             mobHeath : 100,
+            mobSizeMultiplier : 1.2,
             mobSpriteSheet : {
                 ssName : "test",
                 ssFile : "test.png",
@@ -96,6 +103,7 @@ var zoneObject = {
             mobId : 3,
             mobName : "mino",
             mobHeath : 100,
+            mobSizeMultiplier : 1.2,
             mobSpriteSheet : {
                 ssName : "test1",
                 ssFile : "test1.png",
@@ -130,21 +138,22 @@ var zoneObject = {
             mobId : 4,
             mobName : "testb",
             mobHeath : 100,
+            mobSizeMultiplier : 2,
             mobSpriteSheet : {
                 ssName : "testb",
                 ssFile : "testb.png",
-                frameWidth : 1186,
-                frameHeight : 949, 
+                frameWidth : 500,
+                frameHeight : 400, 
                 animations: {
                     idle  : {
-                        frames: [0,1,2,3],
+                        frames: [0,1,2,3,4,5,6,7,8,9],
                         next: true,
-                        speed: 2
+                        speed: 0.5
                     },
                     attack : {
                         frames: [10,11,12,13,14,15,16,17,18,19],
                         next: false,
-                        speed: 0.8
+                        speed: 1
                     },
                     stagger : {
                         frames: [8,9],
@@ -152,7 +161,7 @@ var zoneObject = {
                         speed:1
                     },
                     death : {
-                        frames: [10,11,12,13,14,15,16,17,18,19],
+                        frames: [30,31,32,33,34,35,36,37,38,39],
                         next: false,
                         speed: 1
                     }

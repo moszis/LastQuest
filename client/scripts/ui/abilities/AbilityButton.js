@@ -35,9 +35,9 @@ export default class Abilities extends Component {
 
     render() {
         return (
-<div>
-                    <button type="button" className="btn btn-primary" {(e) => this.handleClick(1, e)} >Primary</button>
-</div>
+            <div>
+                    <button type="button" className="btn btn-primary" onClick={(e) => this.handleClick(1, e)} >Primary</button>
+            </div>
         );
     }
 }

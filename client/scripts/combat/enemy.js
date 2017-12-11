@@ -23,7 +23,13 @@ export default class Enemy {
 
       this.combatArea = combatArea;
 
-      this.sprite = spriteManager.createSprite(this.spriteSheet, this.combatArea, this.mob.mobName, this.leftClick.bind(this));
+      this.sprite = spriteManager.createSprite(
+                      this.spriteSheet, 
+                      this.combatArea, 
+                      this.mob.mobName, 
+                      this.getSpriteScale(),
+                      this.leftClick.bind(this)
+                    );
 
       scene.combatArea[this.combatArea].isEnemy = true;
       scene.combatArea[this.combatArea].Enemy = this;
@@ -38,7 +44,6 @@ export default class Enemy {
     }
 
     attack(){
-      console.log("attacking!!!!!!!!");
       spriteManager.playAnimation(this.sprite, "attack", this.idle.bind(this));
     }
 
@@ -65,7 +70,6 @@ export default class Enemy {
       }
       
       this.updateHealthBar();
-
     }
 
 
@@ -86,10 +90,10 @@ export default class Enemy {
 
       stageManager.addChild(this.healthBar);
       stageManager.addChild(this.healthText);
-
     }
 
     updateHealthBar(){
+
       let x = scene.combatArea[this.combatArea].x + scene.combatArea[this.combatArea].width * 0.2;
       let width = scene.combatArea[this.combatArea].width * 0.6 * this.getHealthPercent() / 100;
       width = (width < 0) ? 0 : width;
@@ -111,6 +115,17 @@ export default class Enemy {
 
     getHealthPercent(){
       return this.mob.mobHeath*this.health/100;
+    }
+
+    getSpriteScale(){
+      
+      console.log("sprite height: "+this.spriteSheet._frameHeight);
+      console.log("combat frame height: "+scene.combatArea[this.combatArea].height);
+
+      let scale = scene.combatArea[this.combatArea].height/this.spriteSheet._frameHeight*100/100;
+      scale *=this.mob.mobSizeMultiplier;
+      console.log("scale: "+scale);
+      return scale;
     }
 
 };

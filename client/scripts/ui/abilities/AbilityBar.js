@@ -3,10 +3,11 @@ import React, { Component } from 'react';
 import * as InputHandler from '../inputHandlers';
 
 
-export default class Abilities extends Component {
+export default class AbilityBar extends Component {
 
     constructor(props){
         super();
+        
         this.handleClick = InputHandler.abilityClick.bind(InputHandler);
         this.seeItems = this.seeItems.bind(this);
         this.drag = this.drag.bind(this);
@@ -38,7 +39,7 @@ export default class Abilities extends Component {
 
             <div id="abilitiesBar" style={this.windowLocation()}>
                 <div id="abilitiesBarheader" >
-                    <div>Abilities</div>
+                    <div></div>
                 </div>
                 <div className="modal-body">
                     <button type="button" className="btn btn-primary" onClick={this.seeItems}>Primary</button>
