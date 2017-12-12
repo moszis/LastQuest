@@ -18,10 +18,8 @@ npm install react --save-dev
 npm install react-dom --save-dev
 npm install babel-preset-react --save-dev
 
----------------------------------------------
 
 webpack (to build)
-npm start (to build, run webpack watch and start)
 
 ---------------PACKAGES USED------------------
 node for webserver
