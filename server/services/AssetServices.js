@@ -8,7 +8,7 @@ export default class AssetServices{
             return [
                 {id: 'backgroundImage', src: '/client/assets/blueBack.jpg'},
                 {id: 'crossHair', src: '/client/assets/crosshair.png'},
-                {id: 'shot', src: '/client/assets/shot.mp3'},
+                {id: 'slash-sword-miss', src: '/client/assets/sounds/slash-sword-miss.wav'},
                 {id: 'countryside', src: '/client/assets/countryside.mp3'},
                 {id: 'gameOverSound', src: '/client/assets/gameOver.mp3'},
                 {id: 'tick', src: '/client/assets/tick.mp3'},

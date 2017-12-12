@@ -20,6 +20,7 @@ npm install babel-preset-react --save-dev
 
 
 webpack (to build)
+npm start (to build, run webpack watch and start)
 
 ---------------PACKAGES USED------------------
 node for webserver

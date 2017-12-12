@@ -273,8 +273,8 @@ function handleMouseDown(event){
     stageManager.addChild(crossHair);
     createjs.Tween.get(crossHair).to({alpha: 0},1000);
 
-    //Play Gunshot sound
-    createjs.Sound.play("shot");
+    
+    createjs.Sound.play("slash-sword-miss");
 
     setTimeout(()=> stageManager.removeChild(crossHair), 50);
     /*
