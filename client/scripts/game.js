@@ -76,24 +76,34 @@ var zoneObject = {
         },
         {
             mobId : 2,
-            mobName : "mino",
+            mobName : "Paladin Nordstrom",
             mobHeath : 100,
-            mobSizeMultiplier : 1.2,
+            mobSizeMultiplier : 2,
             mobSpriteSheet : {
-                ssName : "test",
-                ssFile : "test.png",
-                frameWidth : 347,
-                frameHeight : 260, 
+                ssName : "paladin",
+                ssFile : "Paladin.png",
+                frameWidth : 500,
+                frameHeight : 500, 
                 animations: {
                     idle  : {
-                        frames: [0,1],
+                        frames: [10,11,12,13],
                         next: true,
-                        speed: 0.25
+                        speed: 0.3
+                    },
+                    attack : {
+                        frames: [20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36],
+                        next: false,
+                        speed: 0.8
+                    },
+                    stagger : {
+                        frames: [50,51,52,51,50],
+                        next: false,
+                        speed:0.8
                     },
                     death : {
-                        frames: [3,4,5],
+                        frames: [50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,69,69,69,69,69],
                         next: false,
-                        speed: 1
+                        speed: 0.3
                     }
                 }
             },

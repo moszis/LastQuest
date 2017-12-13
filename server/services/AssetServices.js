@@ -16,7 +16,8 @@ export default class AssetServices{
                 {id: 'batSS', src: '/client/assets/batSS.png'},
                 {id: 'test', src: '/client/assets/test.png'},
                 {id: 'test1', src: '/client/assets/test1.png'},
-                {id: 'testb', src: '/client/assets/testb.png'}
+                {id: 'testb', src: '/client/assets/testb.png'},
+                {id: 'paladin', src: '/client/assets/Paladin.png'}
             ];
         }
     
