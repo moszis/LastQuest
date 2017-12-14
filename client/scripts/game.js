@@ -109,51 +109,53 @@ var zoneObject = {
             },
             mobDeathSound : "batDeathSound"
         },
+        
         {
             mobId : 3,
-            mobName : "mino",
+            mobName : "Paladin 1000",
             mobHeath : 100,
-            mobSizeMultiplier : 1.2,
+            mobSizeMultiplier : 1,
             mobSpriteSheet : {
-                ssName : "test1",
-                ssFile : "test1.png",
-                frameWidth : 1265,
-                frameHeight : 729, 
+                ssName : "paladin1000",
+                ssFile : "Paladin1000.png",
+                frameWidth : 1000,
+                frameHeight : 1000, 
                 animations: {
                     idle  : {
-                        frames: [0,1],
+                        frames: [0,1,2],
                         next: true,
-                        speed: 0.25
+                        speed: 1
                     },
                     attack : {
-                        frames: [3,4,5,6,7,6,5,4,3,2,1],
+                        frames: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19],
                         next: false,
-                        speed: 0.8
+                        speed: 5
                     },
                     stagger : {
-                        frames: [8,9],
+                        frames: [0,1,2],
                         next: false,
-                        speed:0.8
+                        speed:1
                     },
                     death : {
-                        frames: [8,9,8,9,8,9,9,9],
+                        frames: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19],
                         next: false,
-                        speed: 0.8
+                        speed: 1
                     }
                 }
             },
             mobDeathSound : "batDeathSound"
         },
+
         {
             mobId : 4,
-            mobName : "testb",
+            mobName : "Ogre",
             mobHeath : 100,
             mobSizeMultiplier : 2,
             mobSpriteSheet : {
-                ssName : "testb",
-                ssFile : "testb.png",
-                frameWidth : 500,
-                frameHeight : 400, 
+                ssName : "Ogre",
+                ssFile : "ogre.png",
+                frameWidth : 1186,
+                frameHeight : 949, 
                 animations: {
                     idle  : {
                         frames: [0,1,2,3,4,5,6,7,8,9],
@@ -166,7 +168,7 @@ var zoneObject = {
                         speed: 1
                     },
                     stagger : {
-                        frames: [8,9],
+                        frames: [0,1],
                         next: false,
                         speed:1
                     },
@@ -220,13 +222,13 @@ function queueLoaded(event){
     spriteManager.initNew();
     spawnManager = new SpawnManager();
 
-    scene.setBackground();
+    //scene.setBackground();
 
     // Play background sound
     createjs.Sound.play(zoneObject.zoneSoundName, {loop: -1});
 
     // Add ticker
-    createjs.Ticker.setFPS(15);
+    createjs.Ticker.setFPS(5);
     createjs.Ticker.addEventListener('tick', stageManager.stage);
     createjs.Ticker.addEventListener('tick', tickEvent);
 
@@ -262,7 +264,7 @@ function tickEvent(){
     spawnManager.processSpawnTick();
 
     
-    drawSceneRectangles();
+    //drawSceneRectangles();
 }
 
 
