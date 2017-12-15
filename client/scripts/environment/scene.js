@@ -119,5 +119,6 @@ export default class Scene{
       }
 
       this.combatArea[2] = this.combatAreaRight;
-    }    
+    }  
+  
 };

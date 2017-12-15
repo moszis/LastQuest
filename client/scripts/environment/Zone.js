@@ -1,4 +1,5 @@
 import * as AssetServices from '../assets/AssetServices';
+import * as DataServices  from '../assets/DataServices';
 import AssetLoader        from '../assets/AssetLoader';
 
 let instance = null;
@@ -13,10 +14,11 @@ export default class Zone{
       return instance;
     }
 
-    initNew(zone){
-        this.zoneCode = zone.zoneCode;
-        this.zoneBackgroundName = zone.zoneBackgroundName;
-        this.setMobs(zone.mobs);
+    initNew(sceneInfo){
+        console.log("here");
+        this.zoneCode = sceneInfo.zoneCode;
+        this.setData();
+        
     }
 
     setMobs(mobs){
@@ -30,6 +32,17 @@ export default class Zone{
         .then(data => {
             assetLoader.loadAssets(data);
         })
+    }
+
+    setData(){
+        
+        DataServices.getZone(this.zoneCode)
+        .then(data => {
+            console.log(data);
+            this.setMobs(data.mobs);
+            this.zoneBackgroundName = data.zoneBackgroundName;
+        })
+        
     }
 
 };

@@ -1,5 +1,6 @@
-import TestServices from './services/testServices';
+import TestServices  from './services/testServices';
 import AssetServices from './services/AssetServices';
+import DataServices  from './services/DataServices';
 
 var express = require('express');
 
@@ -20,5 +21,12 @@ export default function(){
            var assetServices = new AssetServices();
            res.status(200).send(assetServices.getAssetsByZone(req.params.zoneCode));
         });
+
+    router.route('/zone/zone:zoneCode')
+        .get(function(req, res){
+           var dataServices = new DataServices();
+           res.status(200).send(dataServices.getZone(req.params.zoneCode));
+        });
+
     return router;
 }
