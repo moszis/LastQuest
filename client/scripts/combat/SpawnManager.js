@@ -41,6 +41,6 @@ export default class SpawnManager {
 
     getNextMob(){
         let ranNum =  Math.floor(Math.random()*zone.mobs.length);
-        return zone.mobs[3];
+        return zone.mobs[2];
     }
 }

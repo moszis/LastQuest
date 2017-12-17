@@ -23,15 +23,18 @@ export default class SpriteManager {
         this.queue    = objectManager.queue;
     }
 
-    createSpriteSheet(mobSpriteSheet){
+    createSpriteSheet(mobAnimation){
+console.log("hereee");
 
         let spriteSheet = new this.createjs.SpriteSheet({
-            "images": [this.queue.getResult(mobSpriteSheet.ssName)],
-            "frames": {"width": mobSpriteSheet.frameWidth, "height": mobSpriteSheet.frameHeight},
+            "images": [this.queue.getResult(mobAnimation.ssName)],
+            "frames": {"width": mobAnimation.frameWidth, "height": mobAnimation.frameHeight},
             "animations": {         
-              idle: mobSpriteSheet.animations.idle,
-              attack: mobSpriteSheet.animations.attack,
-              death: mobSpriteSheet.animations.death,
+              "play": {
+                  frames:mobAnimation.frames,
+                  next: mobAnimation.next,
+                  speed: mobAnimation.speed
+              }
             }
         });
 

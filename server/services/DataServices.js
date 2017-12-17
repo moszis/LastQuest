@@ -81,32 +81,51 @@ export default class DataServices{
                         mobName : "Paladin 1000",
                         mobHeath : 100,
                         mobSizeMultiplier : 1,
-                        mobSpriteSheet : {
-                            ssName : "paladin1000",
-                            ssFile : "Paladin1000.png",
-                            frameWidth : 1000,
-                            frameHeight : 1000, 
-                            animations: {
-                                idle  : {
-                                    frames: [0,1,2],
-                                    next: true,
-                                    speed: 1
-                                },
-                                attack : {
-                                    frames: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19],
-                                    next: false,
-                                    speed: 5
-                                },
-                                stagger : {
-                                    frames: [0,1,2],
-                                    next: false,
-                                    speed:1
-                                },
-                                death : {
-                                    frames: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19],
-                                    next: false,
-                                    speed: 1
-                                }
+                        mobAnimations: {
+                            idle  : {
+                                ssName:"PaladinNordstromIdle",
+                                ssFile : "PaladinNordstromAttackNW.png",
+                                frameWidth : 1000,
+                                frameHeight : 1000, 
+                                frames: [0,1,2],
+                                next: true,
+                                speed: 1
+                            },
+                            attackNW : {
+                                ssName:"PaladinNordstromAttackNW",
+                                ssFile : "PaladinNordstromAttackNW.png",
+                                frameWidth : 1000,
+                                frameHeight : 1000, 
+                                frames: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19],
+                                next: false,
+                                speed: 1
+                            },
+                            attackSE : {
+                                ssName:"PaladinNordstromAttackSE",
+                                ssFile : "PaladinNordstromAttackSE.png",
+                                frameWidth : 1000,
+                                frameHeight : 1000, 
+                                frames: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19],
+                                next: false,
+                                speed: 1
+                            },
+                            stagger : {
+                                ssName:"PaladinNordstromDeath",
+                                ssFile : "PaladinNordstromDeath.png",
+                                frameWidth : 1000,
+                                frameHeight : 1000, 
+                                frames: [0,1,2,1,0],
+                                next: false,
+                                speed:1
+                            },
+                            death : {
+                                ssName:"PaladinNordstromDeath",
+                                ssFile : "PaladinNordstromDeath.png",
+                                frameWidth : 1000,
+                                frameHeight : 1000, 
+                                frames: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24],
+                                next: false,
+                                speed: 1
                             }
                         },
                         mobDeathSound : "batDeathSound"
@@ -126,12 +145,12 @@ export default class DataServices{
                                 idle  : {
                                     frames: [0,1,2,3,4,5,6,7,8,9],
                                     next: true,
-                                    speed: 0.5
+                                    speed: 1
                                 },
                                 attack : {
                                     frames: [10,11,12,13,14,15,16,17,18,19],
                                     next: false,
-                                    speed: 1
+                                    speed: 2
                                 },
                                 stagger : {
                                     frames: [0,1],

@@ -15,6 +15,7 @@ export default class Enemy {
       this.mob = mob;
       this.health = mob.mobHeath;
       this.setSpriteSheet();
+      this.activeSprite = null;
 
     }
 
@@ -23,36 +24,67 @@ export default class Enemy {
 
       this.combatArea = combatArea;
 
-      this.sprite = spriteManager.createSprite(
-                      this.spriteSheet, 
+      this.spriteIdle = spriteManager.createSprite(
+                      this.ssIdle, 
                       this.combatArea, 
                       this.mob.mobName, 
-                      this.getSpriteScale(),
+                      this.getSpriteScale(this.ssIdle),
+                      this.leftClick.bind(this)
+                    );
+      this.spriteAttackNW = spriteManager.createSprite(
+                      this.ssDeath, 
+                      this.combatArea, 
+                      this.mob.mobName, 
+                      this.getSpriteScale(this.ssDeath),
                       this.leftClick.bind(this)
                     );
 
+      this.spriteDeath = spriteManager.createSprite(
+                      this.ssDeath, 
+                      this.combatArea, 
+                      this.mob.mobName, 
+                      this.getSpriteScale(this.ssDeath),
+                      this.leftClick.bind(this)
+                    );
       scene.combatArea[this.combatArea].isEnemy = true;
       scene.combatArea[this.combatArea].Enemy = this;
 
-      stageManager.addChild(this.sprite);
+      
       this.setHealthBar();
       this.idle();
     }
 
     idle(){
-      spriteManager.playAnimation(this.sprite, "idle");
+      if(this.activeSprite != this.spriteIdle){
+        stageManager.removeChild(this.activeSprite);
+        stageManager.addChild(this.spriteIdle);
+        this.activeSprite = this.spriteIdle;
+      }
+      spriteManager.playAnimation(this.spriteIdle, "play");
     }
 
     attack(){
-      spriteManager.playAnimation(this.sprite, "attack", this.idle.bind(this));
+      if(this.activeSprite != this.spriteAttackNW){
+        stageManager.removeChild(this.activeSprite);
+        stageManager.addChild(this.spriteAttackNW);
+        this.activeSprite = this.spriteAttackNW;
+      }
+      spriteManager.playAnimation(this.spriteAttackNW, "play", this.idle.bind(this));
     }
 
     kill(){
-      spriteManager.playAnimation(this.sprite, "death", this.destroy.bind(this));
+      if(this.activeSprite != this.spriteDeath){
+        stageManager.removeChild(this.activeSprite);
+        stageManager.addChild(this.spriteDeath);
+        this.activeSprite = this.spriteDeath;
+        spriteManager.playAnimation(this.spriteDeath, "play", this.destroy.bind(this));
+      }
     }
 
     destroy(){
-      stageManager.removeChild(this.sprite);
+      stageManager.removeChild(this.spriteIdle);
+      stageManager.removeChild(this.spriteAttackNW);
+      stageManager.removeChild(this.spriteDeath);
       stageManager.removeChild(this.healthBar);
       stageManager.removeChild(this.healthText);
       scene.combatArea[this.combatArea].isEnemy = false;
@@ -75,7 +107,14 @@ export default class Enemy {
 
 
     setSpriteSheet(){
-      this.spriteSheet = spriteManager.createSpriteSheet(this.mob.mobSpriteSheet);
+      
+      this.ssIdle     = spriteManager.createSpriteSheet(this.mob.mobAnimations.idle);
+      console.log("idle done");
+      this.ssAttackNW = spriteManager.createSpriteSheet(this.mob.mobAnimations.attackNW);
+      this.ssAttackSE = spriteManager.createSpriteSheet(this.mob.mobAnimations.attackSE);
+      this.ssStagger  = spriteManager.createSpriteSheet(this.mob.mobAnimations.stagger);
+      this.ssDeath    = spriteManager.createSpriteSheet(this.mob.mobAnimations.death);
+      console.log("spritesheets done");
     }
 
     setHealthBar(){
@@ -117,15 +156,16 @@ export default class Enemy {
       return this.mob.mobHeath*this.health/100;
     }
 
-    getSpriteScale(){
-      
-      console.log("sprite height: "+this.spriteSheet._frameHeight);
+    getSpriteScale(spriteSheet){
+      console.log("sprite height: "+spriteSheet._frameHeight);
       console.log("combat frame height: "+scene.combatArea[this.combatArea].height);
 
-      let scale = scene.combatArea[this.combatArea].height/this.spriteSheet._frameHeight*100/100;
+      let scale = scene.combatArea[this.combatArea].height/spriteSheet._frameHeight * 100/100;
+
       scale *=this.mob.mobSizeMultiplier;
       console.log("scale: "+scale);
       return scale;
+
     }
 
 };
