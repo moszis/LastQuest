@@ -3,11 +3,9 @@ import router from './server/routes';
 var express  = require('express');
 var http     = require('http');
 const path   = require('path');
-//var socketIO = require('socket.io');
 
 var app = express();
 var server = http.Server(app);
-//var io = socketIO(server);
 
 /***************************/
 //TODO: Temporarily doing this manually until I figure out how to prevent webpack

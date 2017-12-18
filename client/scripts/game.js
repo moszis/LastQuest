@@ -3,7 +3,7 @@ import AssetLoader     from './assets/AssetLoader';
 import Zone            from './environment/Zone';
 import Scene           from './environment/Scene';
 import ObjectManager   from './environment/ObjectManager';
-import SpawnManager    from './combat/SpawnManager';
+import EnemyManager    from './combat/EnemyManager';
 import StageManager    from './graphics/StageManager';
 import SpriteManager   from './graphics/SpriteManager';
 import GraphicsManager from './graphics/GraphicsManager';
@@ -17,17 +17,16 @@ var scene         = new Scene();
 var zone          = new Zone();
 
 var assetLoader;
-var spawnManager;
+var enemyManager;
 
 
 //TEMPORARY ***********
 var context;
-var score = 0;
-var scoreText;
-var gameTimer;
-var gameTime = 0;
-var timerText;
 var crossHair;
+var ticks = 0;
+
+//THIS NEEDS TO GO TO GLOBAL PROPERTIES
+var fps = 5;
 
 //This should be defined on zone change request
 var sceneInfo = {
@@ -50,16 +49,13 @@ window.onload = function()
     stageManager.initNew("mainCanvas");
     graphicsManager.initNew();
 
-    createjs.Sound.alternateExtensions = ["ogg"];
-    
+    createjs.Sound.alternateExtensions = ["ogg"]; 
 
     //Using ES6 export module
     AssetServices.getAssetListByZone(sceneInfo.zoneCode)
     .then(data => {
         assetLoader.loadAssets(data);
     })
-
-    gameTimer = setInterval(updateTime, 1000);
 
 }
 
@@ -72,36 +68,23 @@ function queueLoaded(event){
     objectManager.setQueue(assetLoader.getQueue());
 
     spriteManager.initNew();
-    spawnManager = new SpawnManager();
+    enemyManager = new EnemyManager();
 
-    //scene.setBackground();
+    scene.setBackground();
 
     /****TODOOO */
     // Play background sound
-   // createjs.Sound.play(zoneObject.zoneSoundName, {loop: -1});
+    //createjs.Sound.play(zoneObject.zoneSoundName, {loop: -1});
 
     // Add ticker
-    createjs.Ticker.setFPS(5);
+    createjs.Ticker.setFPS(fps);
     createjs.Ticker.addEventListener('tick', stageManager.stage);
     createjs.Ticker.addEventListener('tick', tickEvent);
 
-    // Set up events AFTER the game is loaded
-    //window.onmousemove = handleMouseMove;
+
     window.onmousedown = handleMouseDown;
 
 
-    
-            /* TEMPORARY UNTIL USELESS*************/
-            //Add Score
-            scoreText = new createjs.Text("1UP: " + score.toString(), "36px Arial", "#FFF");
-            scoreText.x = 10;
-            scoreText.y = 10;
-            stageManager.addChild(scoreText);
-            //Ad Timer
-            timerText = new createjs.Text("Time: " + gameTime.toString(), "36px Arial", "#FFF");
-            timerText.x = 800;
-            timerText.y = 10;
-            stageManager.addChild(timerText);
             /* TEMPORARY TO DRAW COMBAT STRUCTURE*************/
             var canvas = document.getElementById('mainCanvas');
             context = canvas.getContext('2d');
@@ -113,24 +96,19 @@ function queueLoaded(event){
 
 
 function tickEvent(){
+    ticks+=1;
+    if(ticks % fps == 0)
+      console.log("game seconds: "+ticks/fps);
 
-    spawnManager.processSpawnTick();
+    enemyManager.processTick();
 
     
     //drawSceneRectangles();
 }
 
 
-function handleMouseMove(event){
-    crossHair.x = event.clientX-45;
-    crossHair.y = event.clientY-45;
-}
-
-
 function handleMouseDown(event){
    
-    
-
     //Display CrossHair
     crossHair = new createjs.Bitmap(assetLoader.getAsset("crossHair"));
     crossHair.x = event.clientX-45;
@@ -142,65 +120,8 @@ function handleMouseDown(event){
     createjs.Sound.play("slash-sword-miss");
 
     setTimeout(()=> stageManager.removeChild(crossHair), 50);
-    /*
-
-    //Obtain Shot position
-    var shotX = Math.round(event.clientX);
-    var shotY = Math.round(event.clientY);
-
-    var spriteX = Math.round(enemy.x);
-    var spriteY = Math.round(enemy.y);
-
-    // Compute the X and Y distance using absolte value
-    var distX = Math.abs(shotX - spriteX);
-    var distY = Math.abs(shotY - spriteY);
-
-    // Anywhere in the body or head is a hit - but not the wings
-    if(distX < 30 && distY < 59 )
-    {
-    	//Hit
-    	stage.removeChild(enemy);
-    	batDeath();
-    	score += 100;
-    	scoreText.text = "1UP: " + score.toString();
-    	createjs.Sound.play("deathSound");
-    	
-        //Make it harder next time
-    	enemyYSpeed *= 1.25;
-    	enemyXSpeed *= 1.3;
-
-    	//Create new enemy
-    	var timeToCreate = Math.floor((Math.random()*3500)+1);
-	    //setTimeout(createEnemySprite, timeToCreate);
-
-    } else
-    {
-    	//Miss
-    	score -= 10;
-    	scoreText.text = "1UP: " + score.toString();
-
-    }
-
-    */
 }
 
-function updateTime(){
-	gameTime += 1;
-	if(gameTime > 60)
-	{
-		//End Game and Clean up
-		timerText.text = "GAME OVER";
-		stageManager.removeChild(crossHair);
-        createjs.Sound.removeSound("background");
-        var si =createjs.Sound.play("gameOverSound");
-		clearInterval(gameTimer);
-	}
-	else
-	{
-		timerText.text = "Time: " + gameTime
-        createjs.Sound.play("tick");
-	}
-}
 
 //TEMPORARY TO SHOW STRUCTURE
 function drawSceneRectangles(){

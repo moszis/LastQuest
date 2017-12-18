@@ -4,7 +4,7 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start": "start webpack --watch --hot | start node dist/server.dist.js"
+    "start": "start webpack --watch --hot | start nodemon dist/server.dist.js"
   },
   "author": "Sergey Pugach",
   "license": "ISC",

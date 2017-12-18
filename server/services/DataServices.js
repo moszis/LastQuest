@@ -16,8 +16,7 @@ export default class DataServices{
                         mobHeath : 100,
                         mobSizeMultiplier : 0.5,
                         mobSpriteSheet : {
-                            ssName : "batSS",
-                            ssFile : "batSS.png",
+                            ssNames : ["batSS"],
                             frameWidth : 198,
                             frameHeight : 120, 
                             animations: {
@@ -27,7 +26,7 @@ export default class DataServices{
                                     speed: 1
                                 },
                                 attack : {
-                                    frames: [],
+                                    frames: [0],
                                     next: false,
                                     speed: 1
                                 },
@@ -42,12 +41,11 @@ export default class DataServices{
                     },
                     {
                         mobId : 2,
-                        mobName : "Paladin Nordstrom",
+                        mobName : "Paladin Nordstrom 500",
                         mobHeath : 100,
                         mobSizeMultiplier : 2,
                         mobSpriteSheet : {
-                            ssName : "paladin",
-                            ssFile : "Paladin.png",
+                            ssNames : ["paladin"],
                             frameWidth : 500,
                             frameHeight : 500, 
                             animations: {
@@ -78,70 +76,45 @@ export default class DataServices{
                     
                     {
                         mobId : 3,
-                        mobName : "Paladin 1000",
+                        mobName : "Paladin Nordstrom 1000",
                         mobHeath : 100,
                         mobSizeMultiplier : 1,
                         mobSpriteSheet : {
-                            ssName : "paladin1000",
-                            ssFile : "Paladin1000.png",
+                            ssNames : ["PaladinNordstromAttackNW", 
+                                      "PaladinNordstromAttackSE", 
+                                      "PaladinNordstromDeath"],
                             frameWidth : 1000,
                             frameHeight : 1000, 
                             animations: {
                                 idle  : {
                                     frames: [0,1,2],
                                     next: true,
-                                    speed: 1
+                                    speed: 1,
+                                    actionType: 'idle'
                                 },
-                                attack : {
+                                attackNW : {
                                     frames: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19],
                                     next: false,
-                                    speed: 5
+                                    speed: 2,
+                                    actionType: 'attack'
+                                },
+                                attackSE : {
+                                    frames: [20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39],
+                                    next: false,
+                                    speed: 2,
+                                    actionType: 'attack'
                                 },
                                 stagger : {
                                     frames: [0,1,2],
                                     next: false,
-                                    speed:1
+                                    speed:3,
+                                    actionType: 'stagger'
                                 },
                                 death : {
-                                    frames: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19],
+                                    frames: [40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65],
                                     next: false,
-                                    speed: 1
-                                }
-                            }
-                        },
-                        mobDeathSound : "batDeathSound"
-                    },
-            
-                    {
-                        mobId : 4,
-                        mobName : "Ogre",
-                        mobHeath : 100,
-                        mobSizeMultiplier : 2,
-                        mobSpriteSheet : {
-                            ssName : "Ogre",
-                            ssFile : "ogre.png",
-                            frameWidth : 1186,
-                            frameHeight : 949, 
-                            animations: {
-                                idle  : {
-                                    frames: [0,1,2,3,4,5,6,7,8,9],
-                                    next: true,
-                                    speed: 0.5
-                                },
-                                attack : {
-                                    frames: [10,11,12,13,14,15,16,17,18,19],
-                                    next: false,
-                                    speed: 1
-                                },
-                                stagger : {
-                                    frames: [0,1],
-                                    next: false,
-                                    speed:1
-                                },
-                                death : {
-                                    frames: [30,31,32,33,34,35,36,37,38,39],
-                                    next: false,
-                                    speed: 1
+                                    speed: 1,
+                                    actionType: 'death'
                                 }
                             }
                         },

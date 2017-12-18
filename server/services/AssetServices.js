@@ -18,7 +18,9 @@ export default class AssetServices{
                 {id: 'test1', src: '/client/assets/test1.png'},
                 {id: 'testb', src: '/client/assets/testb.png'},
                 {id: 'paladin', src: '/client/assets/Paladin.png'},
-                {id: 'paladin1000', src: '/client/assets/Paladin1000.png'},
+                {id: 'PaladinNordstromAttackNW', src: '/client/assets/PaladinNordstromAttackNW.png'},
+                {id: 'PaladinNordstromAttackSE', src: '/client/assets/PaladinNordstromAttackSE.png'},
+                {id: 'PaladinNordstromDeath',    src: '/client/assets/PaladinNordstromDeath.png'},
                 {id: 'Ogre', src: '/client/assets/ogre.png'}
             ];
         }

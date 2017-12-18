@@ -15,7 +15,10 @@ export default class Enemy {
       this.mob = mob;
       this.health = mob.mobHeath;
       this.setSpriteSheet();
-
+      this.activeAnimation = null;
+      this.isAttacking = false;
+      //Set based on mob object passed in
+      this.setAnimations();
     }
 
 
@@ -27,8 +30,8 @@ export default class Enemy {
                       this.spriteSheet, 
                       this.combatArea, 
                       this.mob.mobName, 
-                      this.getSpriteScale(),
-                      this.leftClick.bind(this)
+                      this.getSpriteScale(), null
+                      //this.leftClick.bind(this)
                     );
 
       scene.combatArea[this.combatArea].isEnemy = true;
@@ -40,15 +43,28 @@ export default class Enemy {
     }
 
     idle(){
-      spriteManager.playAnimation(this.sprite, "idle");
+      if(this.activeAnimation != "idle"){
+        spriteManager.playAnimation(this.sprite, "idle");
+        this.activeAnimation = "idle";
+        this.isAttacking = false;
+      }
     }
 
     attack(){
-      spriteManager.playAnimation(this.sprite, "attack", this.idle.bind(this));
+      if(this.isAttacking || this.activeAnimation === "death") return;
+
+      let attack = this.attackAnimations[Math.floor(Math.random()*this.attackAnimations.length)];
+      spriteManager.playAnimation(this.sprite, attack, this.idle.bind(this));
+      this.activeAnimation = attack;
+      this.isAttacking = true;
     }
 
-    kill(){
-      spriteManager.playAnimation(this.sprite, "death", this.destroy.bind(this));
+    die(){
+      if(this.activeAnimation != "death"){
+        spriteManager.playAnimation(this.sprite, "death", this.destroy.bind(this));
+        this.activeAnimation = "death";
+        this.isAttacking = false;
+      }
     }
 
     destroy(){
@@ -62,11 +78,9 @@ export default class Enemy {
     leftClick(event){
 
       this.health -= 20;
-      
-      console.log(this.health);
 
       if(this.health <= 0){
-        this.kill();
+        this.die();
       }
       
       this.updateHealthBar();
@@ -77,6 +91,11 @@ export default class Enemy {
     setSpriteSheet(){
       this.spriteSheet = spriteManager.createSpriteSheet(this.mob.mobSpriteSheet);
     }
+
+    setAnimations(){
+      this.attackAnimations = ["attackSE", "attackNW"];
+    }
+
 
     setHealthBar(){
 

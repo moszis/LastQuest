@@ -23,23 +23,23 @@ export default class SpriteManager {
         this.queue    = objectManager.queue;
     }
 
+
+
     createSpriteSheet(mobSpriteSheet){
 
+        let images = mobSpriteSheet.ssNames.map(name => this.queue.getResult(name));
+
         let spriteSheet = new this.createjs.SpriteSheet({
-            "images": [this.queue.getResult(mobSpriteSheet.ssName)],
+            "images": images,
             "frames": {"width": mobSpriteSheet.frameWidth, "height": mobSpriteSheet.frameHeight},
-            "animations": {         
-              idle: mobSpriteSheet.animations.idle,
-              attack: mobSpriteSheet.animations.attack,
-              death: mobSpriteSheet.animations.death,
-            }
+            "animations": mobSpriteSheet.animations
         });
 
         return spriteSheet;
     }
 
+
     //TODO: instead of onclick pass mouse event map
-    //TODO: build scaling functionality.
     //TODO: pass in mob object instead of just name
     //TODO: add relative size to mob (size relative to average mob)
     //TODO: calculate scaleX and scaleY relative to combat area
