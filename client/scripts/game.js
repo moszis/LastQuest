@@ -4,9 +4,9 @@ import Zone            from './environment/Zone';
 import Scene           from './environment/Scene';
 import ObjectManager   from './environment/ObjectManager';
 import EnemyManager    from './combat/EnemyManager';
-import StageManager    from './graphics/StageManager';
-import SpriteManager   from './graphics/SpriteManager';
-import GraphicsManager from './graphics/GraphicsManager';
+import StageManager    from './system/graphics/StageManager';
+import SpriteManager   from './system/graphics/SpriteManager';
+import GraphicsManager from './system/graphics/GraphicsManager';
 
 var objectManager   = new ObjectManager();
 var stageManager    = new StageManager();

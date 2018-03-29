@@ -1,7 +1,7 @@
 import Scene           from '../environment/Scene';
-import SpriteManager   from '../graphics/SpriteManager';
-import StageManager    from '../graphics/StageManager';
-import GraphicsManager from '../graphics/GraphicsManager';
+import SpriteManager   from '../system/graphics/SpriteManager';
+import StageManager    from '../system/graphics/StageManager';
+import GraphicsManager from '../system/graphics/GraphicsManager';
 
 const scene           = new Scene();
 const stageManager    = new StageManager();

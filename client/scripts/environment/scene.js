@@ -1,7 +1,7 @@
 import Zone            from './Zone';
 import AssetLoader     from '../assets/AssetLoader';
-import StageManager    from '../graphics/StageManager';
-import GraphicsManager from '../graphics/GraphicsManager';
+import StageManager    from '../system/graphics/StageManager';
+import GraphicsManager from '../system/graphics/GraphicsManager';
 
 let instance = null;
 

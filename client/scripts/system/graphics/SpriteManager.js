@@ -1,5 +1,5 @@
-import ObjectManager from '../environment/ObjectManager';
-import Scene         from '../environment/Scene';
+import ObjectManager from '../../environment/ObjectManager';
+import Scene         from '../../environment/Scene';
 
 const objectManager = new ObjectManager();
 const scene         = new Scene();
