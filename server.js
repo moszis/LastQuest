@@ -15,9 +15,16 @@ __dirname = path.resolve();
 
 
 app.set('port', 5000);
+
+
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
+
 app.use('/client', express.static(__dirname + '/client'));
 app.use('/dist', express.static(__dirname + '/dist'));
-
 
 // Routing
 app.get('/', function(request, response) {
