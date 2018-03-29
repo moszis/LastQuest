@@ -1,16 +1,21 @@
 import React, { Component } from 'react';
 
 import * as InputHandler from '../inputHandlers';
+import EventManager from '../../system/events/EventManager';
 
+const eventManager = new EventManager();
 
-export default class Abilities extends Component {
+export default class AbilityButton extends Component {
 
     constructor(props){
-        super();
-        this.handleClick = InputHandler.abilityClick.bind(InputHandler);
+        super(props);
+        console.log(props);
+        //this.handleClick = InputHandler.abilityClick.bind(InputHandler);
+        this.handleClick = this.handleClick.bind(this);
         this.seeItems = this.seeItems.bind(this);
         this.drag = this.drag.bind(this);
         this.items = InputHandler.getItems();
+        this.abilityId = props.abilityId;
     }
     
 
@@ -33,10 +38,14 @@ export default class Abilities extends Component {
         return divStyle;
     }
 
+    handleClick(abilityId, event){
+        eventManager.publish("PLAYER_ABILITY_ACTIVATED", abilityId)
+    }
+
     render() {
         return (
             <div>
-                    <button type="button" className="btn btn-primary" onClick={(e) => this.handleClick(1, e)} >Primary</button>
+                    <button type="button" className="btn btn-primary" onClick={(e) => this.handleClick(this.abilityId, e)} >{this.abilityId}</button>
             </div>
         );
     }

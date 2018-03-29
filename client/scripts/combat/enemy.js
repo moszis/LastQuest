@@ -30,8 +30,8 @@ export default class Enemy {
                       this.spriteSheet, 
                       this.combatArea, 
                       this.mob.mobName, 
-                      this.getSpriteScale(), null
-                      //this.leftClick.bind(this)
+                      this.getSpriteScale(), 
+                      this.leftClick.bind(this)
                     );
 
       scene.combatArea[this.combatArea].isEnemy = true;

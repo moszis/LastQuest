@@ -1,6 +1,9 @@
 import Enemy  from './Enemy';
 import Scene  from '../environment/Scene';
 import Zone   from '../environment/Zone';
+import EventManager from '../system/events/EventManager';
+
+const eventManager = new EventManager();
 
 const scene = new Scene();
 const zone  = new Zone();
@@ -8,15 +11,19 @@ const zone  = new Zone();
 export default class EnemyManager {
     
     constructor() {
-        
+        eventManager.subscribe('PLAYER_ABILITY_ACTIVATED', this.processAttack.bind(this));
     }
 
     processTick(){ 
-
         this.processSpawnTick();
         this.processCombatTick();
 
     }
+
+    processAttack(abilityId){
+        console.log("tst&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&"+abilityId);
+    }
+
 
     processSpawnTick(){
         if(Math.random() < 0.95){

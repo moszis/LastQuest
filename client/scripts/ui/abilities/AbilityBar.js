@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import * as InputHandler from '../inputHandlers';
-
+import AbilityButton from './AbilityButton';
 
 export default class AbilityBar extends Component {
 
@@ -42,6 +42,9 @@ export default class AbilityBar extends Component {
                     <div></div>
                 </div>
                 <div className="modal-body">
+                    <AbilityButton abilityId="1"/>
+                    <AbilityButton abilityId="2"/>
+                    <AbilityButton abilityId="12"/>
                     <button type="button" className="btn btn-primary" onClick={this.seeItems}>Primary</button>
                     <button type="button" className="btn btn-secondary" onClick={(e) => this.handleClick(1, e)}>Secondary</button>
                     <button type="button" className="btn btn-success">Success</button>

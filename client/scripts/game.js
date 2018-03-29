@@ -7,11 +7,14 @@ import EnemyManager    from './combat/EnemyManager';
 import StageManager    from './system/graphics/StageManager';
 import SpriteManager   from './system/graphics/SpriteManager';
 import GraphicsManager from './system/graphics/GraphicsManager';
+import EventManager    from './system/events/EventManager';
 
 var objectManager   = new ObjectManager();
 var stageManager    = new StageManager();
 var spriteManager   = new SpriteManager();
 var graphicsManager = new GraphicsManager();
+let eventManager    = new EventManager();
+
 
 var scene         = new Scene();
 var zone          = new Zone();
@@ -100,7 +103,9 @@ function tickEvent(){
     if(ticks % fps == 0)
       console.log("game seconds: "+ticks/fps);
 
-    enemyManager.processTick();
+
+
+    //enemyManager.processTick();
 
     
     //drawSceneRectangles();

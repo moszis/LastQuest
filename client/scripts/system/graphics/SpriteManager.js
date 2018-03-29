@@ -26,7 +26,6 @@ export default class SpriteManager {
 
 
     createSpriteSheet(mobSpriteSheet){
-
         let images = mobSpriteSheet.ssNames.map(name => this.queue.getResult(name));
 
         let spriteSheet = new this.createjs.SpriteSheet({
@@ -45,7 +44,6 @@ export default class SpriteManager {
     //TODO: calculate scaleX and scaleY relative to combat area
     //TODO: calculate regX and regY relative to frame size and scale multiplier
     createSprite(spriteSheet, combatArea, name, scale, onClick){ 
-
         let sprite = new this.createjs.Sprite(spriteSheet);
         //sprite.regX = spriteSheet._frameWidth/2;
         //sprite.regY = spriteSheet._frameHeight/2;
@@ -54,7 +52,7 @@ export default class SpriteManager {
         sprite.name = name;
         sprite.x = scene.combatArea[combatArea].centerX - spriteSheet._frameWidth/2*scale;
         sprite.y = scene.combatArea[combatArea].centerY - spriteSheet._frameHeight/2*scale;
-        sprite.on("click", onClick);
+        if(onClick) sprite.on("click", onClick);
 
         return sprite;
     }
