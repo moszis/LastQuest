@@ -2,8 +2,11 @@ import Zone            from './Zone';
 import AssetLoader     from '../assets/AssetLoader';
 import StageManager    from '../system/graphics/StageManager';
 import GraphicsManager from '../system/graphics/GraphicsManager';
+import EventManager    from '../system/events/EventManager';
 
 let instance = null;
+const stageManager    = new StageManager();
+
 
 export default class Scene{    
 
@@ -30,6 +33,11 @@ export default class Scene{
       }
     }
 
+    setAssets(){
+      this.setBackground();
+      this.setCombatHitAreas();
+    }
+
     setBackground(){
 
       let stageManager    = new StageManager();
@@ -49,7 +57,7 @@ export default class Scene{
         
         this.setCombatAreaCenter();
         this.setCombatAreaLeft();
-        this.setCombatAreaRight();
+        this.setCombatAreaRight();     
     }
 
     setCombatAreaCenter(){
@@ -68,7 +76,8 @@ export default class Scene{
           width   : width,
           height  : height,
           x       : x,
-          y       : y
+          y       : y,
+          id      : 0
       }
 
       this.combatArea[0] = this.combatAreaCenter;
@@ -93,7 +102,8 @@ export default class Scene{
           width   : width,
           height  : height,
           x       : x,
-          y       : y
+          y       : y,
+          id      : 1
       }
 
       this.combatArea[1] = this.combatAreaLeft;
@@ -115,10 +125,22 @@ export default class Scene{
           width   : width,
           height  : height,
           x       : x,
-          y       : y
+          y       : y,
+          id      : 2
       }
 
       this.combatArea[2] = this.combatAreaRight;
     }  
   
+    setCombatHitAreas(){
+
+      let shape = null;
+
+      this.combatArea.forEach(combatArea => {
+        shape = GraphicsManager.createRectangle(combatArea.x, combatArea.y, combatArea.width, combatArea.height);
+        shape.addEventListener("click", function(event) { EventManager.publish("COMBAT_SLOT_LEFT_CLICKED", combatArea.id); });
+        stageManager.addChild(shape);
+      });
+
+    }
 };

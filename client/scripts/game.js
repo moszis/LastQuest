@@ -7,13 +7,11 @@ import EnemyManager    from './combat/EnemyManager';
 import StageManager    from './system/graphics/StageManager';
 import SpriteManager   from './system/graphics/SpriteManager';
 import GraphicsManager from './system/graphics/GraphicsManager';
-import EventManager    from './system/events/EventManager';
 
 var objectManager   = new ObjectManager();
 var stageManager    = new StageManager();
 var spriteManager   = new SpriteManager();
 var graphicsManager = new GraphicsManager();
-let eventManager    = new EventManager();
 
 
 var scene         = new Scene();
@@ -54,9 +52,8 @@ window.onload = function()
 
     createjs.Sound.alternateExtensions = ["ogg"]; 
 
-    //Using ES6 export module
-    AssetServices.getAssetListByZone(sceneInfo.zoneCode)
-    .then(data => {
+
+    AssetServices.getAssetListByZone(sceneInfo.zoneCode).then(data => {
         assetLoader.loadAssets(data);
     })
 
@@ -73,7 +70,8 @@ function queueLoaded(event){
     spriteManager.initNew();
     enemyManager = new EnemyManager();
 
-    scene.setBackground();
+    //scene.setBackground();
+    scene.setAssets();
 
     /****TODOOO */
     // Play background sound
@@ -105,7 +103,7 @@ function tickEvent(){
 
 
 
-    //enemyManager.processTick();
+    enemyManager.processTick();
 
     
     //drawSceneRectangles();

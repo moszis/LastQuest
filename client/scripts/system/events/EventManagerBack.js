@@ -1,18 +1,25 @@
+let instance = null;
+
 export default class EventManager {
     
-    constructor(enforcer) {
-        throw new Error('Event Manager is a Singleton Utility Class; May not create new Instance');
-    }
+    constructor() {
 
-
-    static subscribe(event, callback){
-
-        console.log("SUBSCRIBING to EVENT: "+event);
-
+        if (!instance) {
+            instance = this;
+        }
+        
         if(!global.subscriptions){
             global.subscriptions = [];
             global.lastUid = 0;
         }
+
+        return instance;
+
+    }
+
+    subscribe(event, callback){
+
+        console.log("SUBSCRIBING to EVENT: "+event);
 
         if (!global.subscriptions.hasOwnProperty(event)){
             global.subscriptions[event] = [];
@@ -28,7 +35,7 @@ export default class EventManager {
 
     }
 
-    static unsubscribe(token){
+    unsubsribe(token){
 
         for ( let event in global.subscriptions ){
 
@@ -54,21 +61,16 @@ export default class EventManager {
     }
 
     //Work in progress
-    static publish(event, data){
-        
-        console.log("*** event: "+event+" with data: "+data);
+    publish(event, data){
 
-        console.log(global.subscriptions);
+        console.log("*** event: "+event+" with data: "+data);
 
         if ( !global.subscriptions.hasOwnProperty( event ) ){
             console.log("no such event subscriptions: "+event);
             return;
         }
 
-        global.subscriptions[event].forEach( (eventSub) => {
-            eventSub(data);
-        })
-        //global.subscriptions[event][0](data);
+        global.subscriptions[event][0](data);
     }
   
 

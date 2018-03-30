@@ -32,6 +32,23 @@ export default class GraphicsManager {
         return roundRect;
     }
 
+    //This should only create rectangle shape
+    static createRectangle(x, y, width, height){
+
+        let shape = new createjs.Shape();    
+        shape.graphics.setStrokeStyle(2).beginStroke("#FFF").rect(x, y, width, height);
+        let hit = new createjs.Shape();
+        hit.graphics.beginFill("#FFF").rect(x, y, width, height);
+        shape.hitArea = hit;
+
+        return shape;
+    }
+
+    static createTargetableObject(shape, leftClickEvent){
+
+    }
+
+    
     createText(text, font, color, x, y){
         let textGraphic = new this.createjs.Text(text, font, color);
         textGraphic.x = x;

@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import * as InputHandler from '../inputHandlers';
 import EventManager from '../../system/events/EventManager';
 
-const eventManager = new EventManager();
+//const eventManager = new EventManager();
 
 export default class AbilityButton extends Component {
 
@@ -39,13 +39,13 @@ export default class AbilityButton extends Component {
     }
 
     handleClick(abilityId, event){
-        eventManager.publish("PLAYER_ABILITY_ACTIVATED", abilityId)
+        EventManager.publish("PLAYER_ABILITY_ACTIVATED", abilityId);
     }
 
     render() {
         return (
             <div>
-                    <button type="button" className="btn btn-primary" onClick={(e) => this.handleClick(this.abilityId, e)} >{this.abilityId}</button>
+                <button type="button" className="btn btn-primary" onClick={(e) => this.handleClick(this.abilityId, e)} >{this.abilityId}</button>
             </div>
         );
     }

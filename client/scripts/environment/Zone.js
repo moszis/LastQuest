@@ -15,7 +15,6 @@ export default class Zone{
     }
 
     initNew(sceneInfo){
-        console.log("here");
         this.zoneCode = sceneInfo.zoneCode;
         this.setData();
         
@@ -36,8 +35,7 @@ export default class Zone{
 
     setData(){
         
-        DataServices.getZone(this.zoneCode)
-        .then(data => {
+        DataServices.getZone(this.zoneCode).then(data => {
             console.log(data);
             this.setMobs(data.mobs);
             this.zoneBackgroundName = data.zoneBackgroundName;

@@ -45,13 +45,6 @@ export default class AbilityBar extends Component {
                     <AbilityButton abilityId="1"/>
                     <AbilityButton abilityId="2"/>
                     <AbilityButton abilityId="12"/>
-                    <button type="button" className="btn btn-primary" onClick={this.seeItems}>Primary</button>
-                    <button type="button" className="btn btn-secondary" onClick={(e) => this.handleClick(1, e)}>Secondary</button>
-                    <button type="button" className="btn btn-success">Success</button>
-                    <button type="button" className="btn btn-info">Info</button>
-                    <button type="button" className="btn btn-warning">Warning</button>
-                    <button type="button" className="btn btn-danger">Danger</button>
-                    <button type="button" className="btn btn-link">Link</button>
                 </div>
             </div>
 

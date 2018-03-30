@@ -2,13 +2,11 @@ import Scene           from '../environment/Scene';
 import SpriteManager   from '../system/graphics/SpriteManager';
 import StageManager    from '../system/graphics/StageManager';
 import GraphicsManager from '../system/graphics/GraphicsManager';
-import CombatGraphics  from './CombatGraphics';
 
 const scene           = new Scene();
 const stageManager    = new StageManager();
 const spriteManager   = new SpriteManager();
 const graphicsManager = new GraphicsManager();
-const combatGraphics  = new CombatGraphics();
 
 export default class Enemy {
 
@@ -18,10 +16,9 @@ export default class Enemy {
       this.health = mob.mobHeath;
       this.setSpriteSheet();
       this.activeAnimation = null;
-      this.isActing = false;
+      this.isAttacking = false;
       //Set based on mob object passed in
       this.setAnimations();
-      this.setActions();
     }
 
 
@@ -34,7 +31,7 @@ export default class Enemy {
                       this.combatArea, 
                       this.mob.mobName, 
                       this.getSpriteScale(), 
-                      null
+                      this.leftClick.bind(this)
                     );
 
       scene.combatArea[this.combatArea].isEnemy = true;
@@ -43,58 +40,30 @@ export default class Enemy {
       stageManager.addChild(this.sprite);
       this.setHealthBar();
       this.idle();
-      this.isTargeted = false;
     }
 
     idle(){
       if(this.activeAnimation != "idle"){
         spriteManager.playAnimation(this.sprite, "idle");
         this.activeAnimation = "idle";
-        this.isActing = false;
+        this.isAttacking = false;
       }
     }
 
-    target(){
-      this.isTargeted = true;
-      console.log("TARGET");
-    }
+    attack(){
+      if(this.isAttacking || this.activeAnimation === "death") return;
 
-    unTarget(){
-      this.isTargeted = false;
-      console.log("UN--TARGET");
-    }
-
-    impact(impact){
-      if(impact.damageHealth){
-
-        this.health -= impact.damageHealth;
-
-        if(this.health <= 0){
-          this.die();
-        }
-        
-        this.updateHealthBar();
-      }
-    }
-
-
-    act(){
-      if(this.isActing || this.activeAnimation === "death") return;
-
-      let action = this.actions[Math.floor(Math.random()*this.actions.length)];
-
-      spriteManager.playAnimation(this.sprite, action.animation, this.idle.bind(this));
-      this.activeAnimation = action.animation;
-      this.isActing = true;
-
-      combatGraphics.showEnemyActionIndicators([action], true, this.combatArea);
+      let attack = this.attackAnimations[Math.floor(Math.random()*this.attackAnimations.length)];
+      spriteManager.playAnimation(this.sprite, attack, this.idle.bind(this));
+      this.activeAnimation = attack;
+      this.isAttacking = true;
     }
 
     die(){
       if(this.activeAnimation != "death"){
         spriteManager.playAnimation(this.sprite, "death", this.destroy.bind(this));
         this.activeAnimation = "death";
-        this.isActing = false;
+        this.isAttacking = false;
       }
     }
 
@@ -108,9 +77,16 @@ export default class Enemy {
 
     leftClick(event){
 
-      //this.target();
+      this.health -= 20;
 
+      if(this.health <= 0){
+        this.die();
+      }
+      
+      this.updateHealthBar();
     }
+
+
 
     setSpriteSheet(){
       this.spriteSheet = spriteManager.createSpriteSheet(this.mob.mobSpriteSheet);
@@ -120,33 +96,6 @@ export default class Enemy {
       this.attackAnimations = ["attackSE", "attackNW"];
     }
 
-    setActions(){
-
-      this.actions = [];
-
-      this.actions[0] = {
-        type: 'attack',
-        directional: true,
-        direction: 1,
-        directionCode: 'SE',
-        isAnimated: true,
-        animation: 'attackSE',
-        speed: 5,
-        interaptable: true
-      };
-
-      this.actions[1] = {
-        type: 'attack',
-        directional: true,
-        direction: 6,
-        directionCode: 'NW',
-        isAnimated: true,
-        animation: 'attackNW',
-        speed: 5,
-        interaptable: true
-      };
-
-    }
 
     setHealthBar(){
 
@@ -172,6 +121,11 @@ export default class Enemy {
 
       this.healthBar = graphicsManager.updateRoundRectangle(this.healthBar, x, scene.combatArea[this.combatArea].y, width, 20, 5);
       this.healthText = graphicsManager.updateText(this.healthText, hPercent+"%");
+
+      //TODO: TEMPORARY!!
+      if(hPercent > 0){
+        this.attack();
+      }
     }
 
     getHealth(){

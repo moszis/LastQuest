@@ -3,7 +3,7 @@ import Scene  from '../environment/Scene';
 import Zone   from '../environment/Zone';
 import EventManager from '../system/events/EventManager';
 
-const eventManager = new EventManager();
+//const eventManager = new EventManager();
 
 const scene = new Scene();
 const zone  = new Zone();
@@ -11,17 +11,39 @@ const zone  = new Zone();
 export default class EnemyManager {
     
     constructor() {
-        eventManager.subscribe('PLAYER_ABILITY_ACTIVATED', this.processAttack.bind(this));
+        EventManager.subscribe('PLAYER_ABILITY_ACTIVATED', this.handleAttack.bind(this));
+        EventManager.subscribe('COMBAT_SLOT_LEFT_CLICKED', this.handleTargetting.bind(this));
     }
 
     processTick(){ 
         this.processSpawnTick();
         this.processCombatTick();
-
     }
 
-    processAttack(abilityId){
-        console.log("tst&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&"+abilityId);
+    
+    handleAttack(abilityId){
+        console.log("processing attack....");
+
+        scene.combatArea.forEach((combatArea) => {
+            if(combatArea.Enemy && combatArea.Enemy.isTargeted){
+                combatArea.Enemy.impact({damageHealth: 20});
+            }
+        });
+    }
+
+    handleTargetting(slotId){
+        if(scene.combatArea[slotId].Enemy && scene.combatArea[slotId].Enemy.health > 0 && !scene.combatArea[slotId].Enemy.isTargeted){
+            scene.combatArea.forEach((combatArea) => {
+                if(combatArea.Enemy){
+                    if(combatArea.Enemy.combatArea === slotId){
+                        combatArea.Enemy.target();
+                    }else if(combatArea.Enemy.isTargeted){
+                        combatArea.Enemy.unTarget();
+                    }
+                }
+            })
+        }    
+
     }
 
 
@@ -50,19 +72,19 @@ export default class EnemyManager {
 
         if(scene.combatArea[0].isEnemy === true){
             if(Math.random() > 0.95){
-              scene.combatArea[0].Enemy.attack();
+              scene.combatArea[0].Enemy.act();
             }
         }
 
         if(scene.combatArea[1].isEnemy === true){
             if(Math.random() > 0.95){
-                scene.combatArea[1].Enemy.attack();
+                scene.combatArea[1].Enemy.act();
               }
         }
 
         if(scene.combatArea[2].isEnemy === true){
             if(Math.random() > 0.95){
-                scene.combatArea[2].Enemy.attack();
+                scene.combatArea[2].Enemy.act();
               }
         }
     }
