@@ -8,6 +8,9 @@ export default class ZoneManager{
 
     constructor() {
       if (!instance) {
+
+        EventManager.subscribe('ZONE_CHANGE', this.changeZone.bind(this));
+
         instance = this;
       }
       
@@ -20,17 +23,20 @@ export default class ZoneManager{
         
     }
 
+    changeZone(zoneInfo){
+        console.log("zone change requested!!");
+    }
+
+
     setMobs(mobs){
         this.mobs = mobs;
     }
 
-    loadAssets(){
-        let assetLoader = new AssetLoader();
-
-        AssetServices.getAssetListByZone(this.zoneCode)
-        .then(data => {
+    loadAssets(callback){
+        const assetLoader = new AssetLoader(callback);
+        AssetServices.getAssetListByZone(this.zoneCode).then(data => {
             assetLoader.loadAssets(data);
-        })
+        });
     }
 
     setData(){

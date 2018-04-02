@@ -51,11 +51,12 @@ window.onload = function()
 
     createjs.Sound.alternateExtensions = ["ogg"]; 
 
-
+    zoneManager.loadAssets(queueLoaded);
+    /*
     AssetServices.getAssetListByZone(sceneInfo.zoneCode).then(data => {
         assetLoader.loadAssets(data);
     })
-
+    */
 }
 
 
