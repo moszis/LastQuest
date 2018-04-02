@@ -1,4 +1,4 @@
-import Zone            from './Zone';
+import ZoneManager     from './ZoneManager';
 import AssetLoader     from '../assets/AssetLoader';
 import StageManager    from '../system/graphics/StageManager';
 import GraphicsManager from '../system/graphics/GraphicsManager';
@@ -45,10 +45,10 @@ export default class Scene{
     setBackground(){
 
       let stageManager = new StageManager();
-      let zone         = new Zone();
+      let zoneManager  = new ZoneManager();
       let assetLoader  = new AssetLoader();
 
-      let backgroundImage = GraphicsManager.createBitmap(assetLoader.getAsset(zone.zoneBackgroundName));
+      let backgroundImage = GraphicsManager.createBitmap(assetLoader.getAsset(zoneManager.zoneBackgroundName));
       this.backgroundImage = backgroundImage;
       
       stageManager.addChild(backgroundImage);

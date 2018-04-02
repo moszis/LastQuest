@@ -1,6 +1,6 @@
 import * as AssetServices from './assets/AssetServices';
 import AssetLoader     from './assets/AssetLoader';
-import Zone            from './environment/Zone';
+import ZoneManager     from './environment/ZoneManager';
 import Scene           from './environment/Scene';
 import ObjectManager   from './environment/ObjectManager';
 import EnemyManager    from './combat/EnemyManager';
@@ -15,7 +15,7 @@ var spriteManager   = new SpriteManager();
 
 
 var scene         = new Scene();
-var zone          = new Zone();
+var zoneManager   = new ZoneManager();
 
 var assetLoader;
 var enemyManager;
@@ -44,7 +44,7 @@ window.onload = function()
     assetLoader = new AssetLoader(queueLoaded);
 
     scene.initNew(sceneInfo);
-    zone.initNew(sceneInfo);
+    zoneManager.initNew(sceneInfo);
     
     stageManager.initNew("mainCanvas");
     //graphicsManager.initNew();

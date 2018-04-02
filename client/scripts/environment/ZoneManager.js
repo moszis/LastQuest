@@ -4,7 +4,7 @@ import AssetLoader        from '../assets/AssetLoader';
 
 let instance = null;
 
-export default class Zone{    
+export default class ZoneManager{    
 
     constructor() {
       if (!instance) {
