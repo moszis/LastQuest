@@ -22,7 +22,7 @@ var enemyManager;
 
 
 //TEMPORARY ***********
-var context;
+//var context;
 var ticks = 0;
 
 //THIS NEEDS TO GO TO GLOBAL PROPERTIES
@@ -38,21 +38,15 @@ var sceneInfo = {
 
 window.onload = function()
 {  
-
-    objectManager.setCreatejs(createjs);
+    //objectManager.setCreatejs(createjs);
 
     assetLoader = new AssetLoader(queueLoaded);
 
     scene.initNew(sceneInfo);
     zoneManager.initNew(sceneInfo);
     
-    stageManager.initNew("mainCanvas");
+    stageManager.initNew("mainCanvas", scene);
     //graphicsManager.initNew();
-
-    var canvas = document.getElementById('mainCanvas');
-    context = canvas.getContext('2d');
-    context.canvas.width  = scene.windowWidth;
-    context.canvas.height = scene.windowHeight;
 
     createjs.Sound.alternateExtensions = ["ogg"]; 
 
@@ -91,6 +85,7 @@ function queueLoaded(event){
 
 function tickEvent(){
 
+    /*
     let gamepads = navigator.getGamepads ? navigator.getGamepads() : (navigator.webkitGetGamepads ? navigator.webkitGetGamepads : []);
     if (!gamepads) {
       return;
@@ -110,7 +105,7 @@ function tickEvent(){
 
     });
     
-
+    */
 
     ticks+=1;
     if(ticks % fps == 0)

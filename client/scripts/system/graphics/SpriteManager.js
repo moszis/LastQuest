@@ -19,7 +19,7 @@ export default class SpriteManager {
     }
 
     initNew(){
-        this.createjs = objectManager.createjs;
+        this.createjs = global.createjs;
         this.queue    = objectManager.queue;
     }
 
