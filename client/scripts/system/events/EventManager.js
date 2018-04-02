@@ -53,12 +53,10 @@ export default class EventManager {
         return false;
     }
 
-    //Work in progress
+
     static publish(event, data){
         
         console.log("*** event: "+event+" with data: "+data);
-
-        console.log(global.subscriptions);
 
         if ( !global.subscriptions.hasOwnProperty( event ) ){
             console.log("no such event subscriptions: "+event);
@@ -68,7 +66,6 @@ export default class EventManager {
         global.subscriptions[event].forEach( (eventSub) => {
             eventSub(data);
         })
-        //global.subscriptions[event][0](data);
     }
   
 

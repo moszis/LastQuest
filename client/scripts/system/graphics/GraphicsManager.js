@@ -13,50 +13,64 @@ export default class GraphicsManager {
     }
 
     initNew(){
-        this.createjs = global.createjs;
+        //this.createjs = global.createjs;
     }
 
-    createBitmap(asset){
-        let bitmap = new this.createjs.Bitmap(asset);
+    static createBitmap(asset){
+        let bitmap = new createjs.Bitmap(asset);
         return bitmap;
     }
 
-    createRoundRectangle( x, y, width, height, radius ){
-        let roundRect = new this.createjs.Shape();
+    static createRoundRectangle( x, y, width, height, radius ){
+        let roundRect = new createjs.Shape();
         roundRect.graphics.beginFill("#F00").drawRoundRect(x,y,width,height, radius);
         return roundRect;
     }
 
-    updateRoundRectangle( roundRect, x, y, width, height, radius ){
+    static updateRoundRectangle( roundRect, x, y, width, height, radius ){
         roundRect.graphics.clear().beginFill("#F00").drawRoundRect(x,y,width,height, radius);
         return roundRect;
     }
 
+    static createRectangle(x, y, width, height, color){
+        let shape = new createjs.Shape();    
+        shape.graphics.setStrokeStyle(2).beginStroke(color).rect(x, y, width, height);
+
+        return shape;
+    }
+
+    static updateRectangle( rect, x, y, width, height, color){
+        let shape = new createjs.Shape();    
+        shape.graphics.clear().setStrokeStyle(2).beginStroke(color).rect(x, y, width, height);
+
+        return shape;
+    }
+
     //This should only create rectangle shape
-    static createRectangle(x, y, width, height){
+    static createHitAreaRectangle(x, y, width, height){
 
         let shape = new createjs.Shape();    
-        shape.graphics.setStrokeStyle(2).beginStroke("#FFF").rect(x, y, width, height);
+        shape.graphics.setStrokeStyle(2).beginStroke("#000").rect(x, y, width, height);
         let hit = new createjs.Shape();
-        hit.graphics.beginFill("#FFF").rect(x, y, width, height);
+        hit.graphics.beginFill("#000").rect(x, y, width, height);
         shape.hitArea = hit;
 
         return shape;
     }
 
-    static createTargetableObject(shape, leftClickEvent){
+    static createTargetableObject(shape, isTransparent, leftClickEvent){
 
     }
 
     
-    createText(text, font, color, x, y){
-        let textGraphic = new this.createjs.Text(text, font, color);
+    static createText(text, font, color, x, y){
+        let textGraphic = new createjs.Text(text, font, color);
         textGraphic.x = x;
         textGraphic.y = y;
         return textGraphic;
     }
 
-    updateText(textGraphic, text){
+    static updateText(textGraphic, text){
         textGraphic.text = text;
         return textGraphic;
     }

@@ -8,6 +8,9 @@ let instance = null;
 const stageManager    = new StageManager();
 
 
+if(!global.gameStore) global.gameStore = [];
+if(!global.gameStore.combatArea) global.gameStore.combatArea = [];
+
 export default class Scene{    
 
     constructor() {
@@ -21,7 +24,8 @@ export default class Scene{
     initNew(sceneProperties){
       this.zoneCode = sceneProperties.zoneCode;
       this.eventCode = sceneProperties.eventCode;
-      this.combatArea = [];
+     // this.backgroundImage = null;
+      this.combatArea = global.gameStore.combatArea;
       
       //Physical client system parameters
       this.windowHeight = window.innerHeight - window.innerHeight/20; 
@@ -40,12 +44,12 @@ export default class Scene{
 
     setBackground(){
 
-      let stageManager    = new StageManager();
-      let graphicsManager = new GraphicsManager();
-      let zone = new Zone();
-      let assetLoader = new AssetLoader();
+      let stageManager = new StageManager();
+      let zone         = new Zone();
+      let assetLoader  = new AssetLoader();
 
-      let backgroundImage = graphicsManager.createBitmap(assetLoader.getAsset(zone.zoneBackgroundName));
+      let backgroundImage = GraphicsManager.createBitmap(assetLoader.getAsset(zone.zoneBackgroundName));
+      this.backgroundImage = backgroundImage;
       
       stageManager.addChild(backgroundImage);
     }
@@ -86,8 +90,6 @@ export default class Scene{
 
     setCombatAreaLeft(){
       
-
-
       let centerX = this.windowWidth/4;
       let centerY = this.windowHeight/2;
       let width   = this.combatAreaWidth;
@@ -137,7 +139,7 @@ export default class Scene{
       let shape = null;
 
       this.combatArea.forEach(combatArea => {
-        shape = GraphicsManager.createRectangle(combatArea.x, combatArea.y, combatArea.width, combatArea.height);
+        shape = GraphicsManager.createHitAreaRectangle(combatArea.x, combatArea.y, combatArea.width, combatArea.height);
         shape.addEventListener("click", function(event) { EventManager.publish("COMBAT_SLOT_LEFT_CLICKED", combatArea.id); });
         stageManager.addChild(shape);
       });
