@@ -45,8 +45,9 @@ window.onload = function()
     scene.initNew(sceneInfo);
     zoneManager.initNew(sceneInfo);
     
+    //instead of scene pass only dimentions
     stageManager.initNew("mainCanvas", scene);
-    //graphicsManager.initNew();
+
 
     createjs.Sound.alternateExtensions = ["ogg"]; 
 
