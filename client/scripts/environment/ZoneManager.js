@@ -1,6 +1,7 @@
 import * as AssetServices from '../assets/AssetServices';
 import * as DataServices  from '../assets/DataServices';
 import AssetLoader        from '../assets/AssetLoader';
+import EventManager    from '../system/events/EventManager';
 
 let instance = null;
 

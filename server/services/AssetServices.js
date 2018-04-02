@@ -6,7 +6,7 @@ export default class AssetServices{
         getAssetsByZone(zoneCode){
             console.log("generating assets for zone: "+zoneCode);
             return [
-                {id: 'backgroundImage', src: '/client/assets/blueBack.jpg'},
+                {id: 'backgroundImage', src: '/client/assets/background.png'},
                 {id: 'crossHair', src: '/client/assets/crosshair.png'},
                 {id: 'slash-sword-miss', src: '/client/assets/sounds/slash-sword-miss.wav'},
                 {id: 'countryside', src: '/client/assets/countryside.mp3'},
