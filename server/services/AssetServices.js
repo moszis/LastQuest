@@ -7,6 +7,7 @@ export default class AssetServices{
             console.log("generating assets for zone: "+zoneCode);
             return [
                 {id: 'backgroundImage', src: '/client/assets/background.png'},
+                {id: 'attackNWIndicator', src: '/client/assets/combat/AttackTopLeftCorner.png'},
                 {id: 'crossHair', src: '/client/assets/crosshair.png'},
                 {id: 'slash-sword-miss', src: '/client/assets/sounds/slash-sword-miss.wav'},
                 {id: 'countryside', src: '/client/assets/countryside.mp3'},

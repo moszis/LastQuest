@@ -144,5 +144,15 @@ export default class Scene{
         stageManager.addChild(shape);
       });
 
+      let zoneManager  = new ZoneManager();
+      let assetLoader  = new AssetLoader();
+      let corner = GraphicsManager.createBitmap(assetLoader.getAsset("attackNWIndicator"));
+      
+      corner.setTransform(this.combatArea[1].x+114.4, this.combatArea[1].y+110, 0.1, 0.1, 180);
+      
+      console.log(corner.image.width);
+      this.attackNWIndicator = corner;
+      
+      stageManager.addChild(corner);
     }
 };

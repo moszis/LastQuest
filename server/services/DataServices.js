@@ -78,7 +78,7 @@ export default class DataServices{
                         mobId : 3,
                         mobName : "Paladin Nordstrom 1000",
                         mobHeath : 100,
-                        mobSizeMultiplier : 1,
+                        mobSizeMultiplier : 2,
                         mobSpriteSheet : {
                             ssNames : ["PaladinNordstromAttackNW", 
                                       "PaladinNordstromAttackSE", 
