@@ -1,7 +1,8 @@
-import ObjectManager from '../../environment/ObjectManager';
+//import ObjectManager from '../../environment/ObjectManager';
 import Scene         from '../../environment/Scene';
+import AssetLoader   from '../../assets/AssetLoader';
 
-const objectManager = new ObjectManager();
+//const objectManager = new ObjectManager();
 const scene         = new Scene();
 
 let instance = null;
@@ -18,17 +19,13 @@ export default class SpriteManager {
 
     }
 
-    initNew(){
-        this.createjs = global.createjs;
-        this.queue    = objectManager.queue;
-    }
-
-
-
     createSpriteSheet(mobSpriteSheet){
-        let images = mobSpriteSheet.ssNames.map(name => this.queue.getResult(name));
+        let assetLoader = new AssetLoader();
+        let queue = assetLoader.getQueue();
 
-        let spriteSheet = new this.createjs.SpriteSheet({
+        let images = mobSpriteSheet.ssNames.map(name => queue.getResult(name));
+
+        let spriteSheet = new createjs.SpriteSheet({
             "images": images,
             "frames": {"width": mobSpriteSheet.frameWidth, "height": mobSpriteSheet.frameHeight},
             "animations": mobSpriteSheet.animations
@@ -44,7 +41,7 @@ export default class SpriteManager {
     //TODO: calculate scaleX and scaleY relative to combat area
     //TODO: calculate regX and regY relative to frame size and scale multiplier
     createSprite(spriteSheet, combatArea, name, scale, onClick){ 
-        let sprite = new this.createjs.Sprite(spriteSheet);
+        let sprite = new createjs.Sprite(spriteSheet);
         //sprite.regX = spriteSheet._frameWidth/2;
         //sprite.regY = spriteSheet._frameHeight/2;
         sprite.scaleX = scale;

@@ -12,15 +12,15 @@ export default class StageManager {
 
     }
 
-    initNew(canvasId, scene){
-        this.createjs = global.createjs;
+    initNew(canvasId, windowWidth, windowHeight){
 
-        let canvas = document.getElementById('mainCanvas');
+        let canvas  = document.getElementById(canvasId);
         let context = canvas.getContext('2d');
-        context.canvas.width  = scene.windowWidth;
-        context.canvas.height = scene.windowHeight;
 
-        this.stage    = new this.createjs.Stage(canvasId);
+        context.canvas.width  = windowWidth;
+        context.canvas.height = windowHeight;
+
+        this.stage    = new createjs.Stage(canvasId);
     }
 
 

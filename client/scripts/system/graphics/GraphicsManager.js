@@ -12,10 +12,6 @@ export default class GraphicsManager {
 
     }
 
-    initNew(){
-        //this.createjs = global.createjs;
-    }
-
     static createBitmap(asset){
         let bitmap = new createjs.Bitmap(asset);
         return bitmap;

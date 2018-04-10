@@ -1,11 +1,14 @@
 export default class DataServices{
     
-    
+
+
+
         getZone(zoneCode){
-            console.log("generating data for zone: "+zoneCode);
-            return {
+            
+            let testCombatArea = {
                 zoneId : 1,
                 zoneCode : "testCombatArea",
+                defaultEventCode : "combat",
                 zoneBackgroundName : "backgroundImage",
                 zoneBackgroundImg  : "blueBack.jpg",
                 zoneSoundName      : "countryside",
@@ -123,6 +126,9 @@ export default class DataServices{
                 ]
             
             };
+
+            console.log("generating data for zone: "+zoneCode);
+            return testCombatArea;
         }
     
     }

@@ -5,9 +5,8 @@ export default class AssetLoader {
     constructor(onComplete) {
 
         if (!instance) {
-            this.createjs = global.createjs;
 
-            let queue = new this.createjs.LoadQueue(false);
+            let queue = new createjs.LoadQueue(false);
             queue.installPlugin(createjs.Sound);
             queue.on("progress", this.queueProgress, this);
             queue.on("error", this.queueError, this);
@@ -41,6 +40,11 @@ export default class AssetLoader {
         console.log("QUEUE Progress.....!!");
     }
     
+    queueComplete(event){
+        console.log("QUEUE COMPLETE!!");
+    }
+    
+
     queueError(event){
         console.log("QUEUE ERROR!!");
     }

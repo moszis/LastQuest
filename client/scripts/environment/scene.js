@@ -22,14 +22,14 @@ export default class Scene{
     }
 
     initNew(sceneProperties){
-      this.zoneCode = sceneProperties.zoneCode;
+      this.zoneCode  = sceneProperties.zoneCode;
       this.eventCode = sceneProperties.eventCode;
-     // this.backgroundImage = null;
+
       this.combatArea = global.gameStore.combatArea;
       
       //Physical client system parameters
       this.windowHeight = window.innerHeight - window.innerHeight/20; 
-      this.windowWidth  = window.innerWidth - window.innerWidth/20;
+      this.windowWidth  = window.innerWidth  - window.innerWidth/20;
 
       //Canvas and visual game component dimentions
       if(this.eventCode === "combat"){
@@ -40,6 +40,10 @@ export default class Scene{
     setAssets(){
       this.setBackground();
       this.setCombatHitAreas();
+
+      /****TODOOO */
+      // Play background sound
+      //createjs.Sound.play(zoneObject.zoneSoundName, {loop: -1});
     }
 
     setBackground(){

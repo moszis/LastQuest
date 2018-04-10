@@ -1,110 +1,57 @@
-import * as AssetServices from './assets/AssetServices';
-import AssetLoader     from './assets/AssetLoader';
-import ZoneManager     from './environment/ZoneManager';
-import Scene           from './environment/Scene';
-import ObjectManager   from './environment/ObjectManager';
 import EnemyManager    from './combat/EnemyManager';
 import StageManager    from './system/graphics/StageManager';
-import SpriteManager   from './system/graphics/SpriteManager';
-import GraphicsManager from './system/graphics/GraphicsManager';
+import EventManager    from './system/events/EventManager';
 
-var objectManager   = new ObjectManager();
-var stageManager    = new StageManager();
-var spriteManager   = new SpriteManager();
-//var graphicsManager = new GraphicsManager();
-
-
-var scene         = new Scene();
-var zoneManager   = new ZoneManager();
-
-var assetLoader;
-var enemyManager;
+let stageManager = new StageManager();
+let enemyManager = new EnemyManager();
 
 
 //TEMPORARY ***********
-//var context;
-var ticks = 0;
+let ticks = 0;
 
 //THIS NEEDS TO GO TO GLOBAL PROPERTIES
-var fps = 5;
+const fps        = 5;
+const canvasId   = "mainCanvas";
+let windowHeight = window.innerHeight - window.innerHeight/20; 
+let windowWidth  = window.innerWidth  - window.innerWidth/20;
 
 //This should be defined on zone change request
-var sceneInfo = {
-    zoneCode : "testCombatArea",
-    eventCode : "combat"
+const defaultZone = {
+    zoneCode : "testCombatArea"
 }
 //***************/
 
 
 window.onload = function()
 {  
-    //objectManager.setCreatejs(createjs);
 
-    assetLoader = new AssetLoader(queueLoaded);
+    stageManager.initNew(canvasId, windowWidth, windowHeight);
 
-    scene.initNew(sceneInfo);
-    zoneManager.initNew(sceneInfo);
-    
-    //instead of scene pass only dimentions
-    stageManager.initNew("mainCanvas", scene);
-
-
-    createjs.Sound.alternateExtensions = ["ogg"]; 
-
-    zoneManager.loadAssets(queueLoaded);
-    /*
-    AssetServices.getAssetListByZone(sceneInfo.zoneCode).then(data => {
-        assetLoader.loadAssets(data);
-    })
-    */
-}
-
-
-
-function queueLoaded(event){
-
-    objectManager.setScene(scene);
-    objectManager.setStage(stageManager.stage);
-    objectManager.setQueue(assetLoader.getQueue());
-
-    spriteManager.initNew();
-    enemyManager = new EnemyManager();
-
-    scene.setAssets();
-
-    /****TODOOO */
-    // Play background sound
-    //createjs.Sound.play(zoneObject.zoneSoundName, {loop: -1});
-
-    // Add ticker
     createjs.Ticker.setFPS(fps);
     createjs.Ticker.addEventListener('tick', stageManager.stage);
     createjs.Ticker.addEventListener('tick', tickEvent);
 
-}
+    createjs.Sound.alternateExtensions = ["ogg"]; 
 
+    EventManager.publish("ZONE_CHANGE", defaultZone);
+}
 
 
 function tickEvent(){
 
     /*
     let gamepads = navigator.getGamepads ? navigator.getGamepads() : (navigator.webkitGetGamepads ? navigator.webkitGetGamepads : []);
-    if (!gamepads) {
-      return;
-    }
+    if (!gamepads) return;
+
   
     var gp = gamepads[0];
     //console.log(gamepads[0]);
     gamepads[0].buttons.forEach((button) => {
-
         //if(button.pressed) console.log(button);
-
     });
    
     gamepads[0].axes.forEach((axe) => {
-
         if(axe.pressed) console.log(axe);
-
     });
     
     */
