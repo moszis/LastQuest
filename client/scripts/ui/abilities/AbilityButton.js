@@ -16,6 +16,7 @@ export default class AbilityButton extends Component {
         this.drag = this.drag.bind(this);
         this.items = InputHandler.getItems();
         this.abilityId = props.abilityId;
+        this.abilityName = props.abilityName;
     }
     
 
@@ -40,12 +41,25 @@ export default class AbilityButton extends Component {
 
     handleClick(abilityId, event){
         EventManager.publish("PLAYER_ABILITY_ACTIVATED", abilityId);
+
+        
+        if(abilityId == 11){
+            console.log("***************"+abilityId);
+
+            EventManager.publish("ZONE_CHANGE", { zoneCode : "testCombatArea" });
+        }
+
+        if(abilityId == 12){
+            console.log("***************"+abilityId);
+
+            EventManager.publish("ZONE_CHANGE", { zoneCode : "sourceCave" });
+        }
     }
 
     render() {
         return (
             <div>
-                <button type="button" className="btn btn-primary" onClick={(e) => this.handleClick(this.abilityId, e)} >{this.abilityId}</button>
+                <button type="button" className="btn btn-primary" onClick={(e) => this.handleClick(this.abilityId, e)} >{this.abilityName}</button>
             </div>
         );
     }

@@ -6,7 +6,7 @@ export default class DataServices{
         getZone(zoneCode){
             
             let testCombatArea = {
-                zoneId : 1,
+                zoneId : 2,
                 zoneCode : "testCombatArea",
                 defaultEventCode : "combat",
                 zoneBackgroundName : "backgroundImage",
@@ -127,8 +127,24 @@ export default class DataServices{
             
             };
 
+            let sourceCave = {
+                zoneId : 0,
+                zoneCode : "sourceCave",
+                defaultEventCode : "town",
+                zoneBackgroundName : "blueBackground",
+                zoneBackgroundImg  : "blueBack.jpg",
+                zoneSoundName      : "countryside"
+            };
+
             console.log("generating data for zone: "+zoneCode);
-            return testCombatArea;
+            console.log("*"+zoneCode+"*");
+            if(zoneCode.trim() === "sourceCave"){
+                console.log(zoneCode);
+                return sourceCave;
+            }else{
+                return testCombatArea;
+            }
+            
         }
     
     }

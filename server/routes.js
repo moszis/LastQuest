@@ -25,6 +25,7 @@ export default function(){
     router.route('/zone/zone:zoneCode')
         .get(function(req, res){
            var dataServices = new DataServices();
+           console.log(req);
            res.status(200).send(dataServices.getZone(req.params.zoneCode));
         });
 

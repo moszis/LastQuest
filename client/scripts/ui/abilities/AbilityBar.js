@@ -43,8 +43,8 @@ export default class AbilityBar extends Component {
                 </div>
                 <div className="modal-body">
                     <AbilityButton abilityId="1"/>
-                    <AbilityButton abilityId="2"/>
-                    <AbilityButton abilityId="12"/>
+                    <AbilityButton abilityId="11" abilityName="testCombatArea"/>
+                    <AbilityButton abilityId="12" abilityName="Source Cave"/>
                 </div>
             </div>
 
