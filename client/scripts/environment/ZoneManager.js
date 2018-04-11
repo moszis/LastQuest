@@ -22,14 +22,18 @@ export default class ZoneManager{
     changeZone(zoneInfo){
         console.log("zone change requested!!");
         this.zoneCode  = zoneInfo.zoneCode;
+        let scene = new Scene();
+        scene.clearScene();
+
         this.setData();
         this.loadAssets();
 
 
         //0. show load screen
-        //1. set data
-        //2. load assets
-        //3. show zone
+        //1. clean old objects
+        //2. set data
+        //3. load assets
+        //4. show zone
     }
 
 
@@ -49,7 +53,6 @@ export default class ZoneManager{
     setData(){
         
         DataServices.getZone(this.zoneCode).then(data => {
-            console.log(data);
             this.setMobs(data.mobs);
             this.zoneBackgroundName = data.zoneBackgroundName;
             this.eventCode = data.defaultEventCode;

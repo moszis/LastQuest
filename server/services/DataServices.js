@@ -136,8 +136,33 @@ export default class DataServices{
                 zoneSoundName      : "countryside"
             };
 
+            let townSquare = {
+                zoneId : 1,
+                zoneCode : "townSquare",
+                defaultEventCode : "town",
+                zoneBackgroundName : "blueBackground",
+                zoneBackgroundImg  : "blueBack.jpg",
+                zoneSoundName      : "countryside"
+            };
+
             console.log("generating data for zone: "+zoneCode);
             console.log("*"+zoneCode+"*");
+
+            switch(zoneCode) {
+                case "sourceCave":
+                    return sourceCave;
+                    break;
+                case "townSquare":
+                    return townSquare;
+                    break;
+                case "testCombatArea":
+                    return testCombatArea;
+                    break;
+                default:
+            
+            }
+
+
             if(zoneCode.trim() === "sourceCave"){
                 console.log(zoneCode);
                 return sourceCave;

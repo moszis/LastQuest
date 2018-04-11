@@ -16,19 +16,25 @@ export default class EnemyManager {
     }
 
     processTick(){ 
+
+        if(!scene.combatArea || scene.combatArea.length == 0) return;
+
         this.processSpawnTick();
         this.processCombatTick();
+
+
     }
 
     
     handleAttack(abilityId){
-        console.log("processing attack....");
+        if(!scene.combatArea || scene.combatArea.length == 0) return;
 
         scene.combatArea.forEach((combatArea) => {
             if(combatArea.Enemy && combatArea.Enemy.isTargeted){
                 combatArea.Enemy.impact({damageHealth: 20});
             }
         });
+
     }
 
     handleTargetting(slotId){
@@ -161,5 +167,14 @@ export default class EnemyManager {
     getNextMob(){
         let ranNum =  Math.floor(Math.random()*zoneManager.mobs.length);
         return zoneManager.mobs[2];
+    }
+
+    clearEnemies(){
+        scene.combatArea.forEach(combatArea => {
+            if(combatArea.Enemy){
+                Enemy.destroy();
+            }
+        })
+
     }
 }

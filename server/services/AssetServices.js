@@ -4,7 +4,6 @@ export default class AssetServices{
         }
 
         getAssetsByZone(zoneCode){
-            console.log("generating assets for zone: "+zoneCode);
             return [
                 {id: 'backgroundImage', src: '/client/assets/background.png'},
                 {id: 'blueBackground', src: '/client/assets/blueBack.jpg'},

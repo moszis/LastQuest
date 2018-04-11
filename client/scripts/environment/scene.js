@@ -9,7 +9,6 @@ const stageManager    = new StageManager();
 
 
 if(!global.gameStore) global.gameStore = [];
-if(!global.gameStore.combatArea) global.gameStore.combatArea = [];
 
 export default class Scene{    
 
@@ -22,6 +21,9 @@ export default class Scene{
     }
 
     initNew(sceneProperties){
+
+      if(!global.gameStore.combatArea) global.gameStore.combatArea = [];
+      console.log(sceneProperties);
       this.zoneCode  = sceneProperties.zoneCode;
       this.eventCode = sceneProperties.eventCode;
 
@@ -35,16 +37,26 @@ export default class Scene{
       if(this.eventCode === "combat"){
         this.setCombatDimentions();
       }
+
     }
 
     setAssets(){
       this.setBackground();
-      this.setCombatHitAreas();
+      if(this.eventCode === "combat"){
+        this.setCombatHitAreas();
+      }
+      
 
       /****TODOOO */
       // Play background sound
       //createjs.Sound.play(zoneObject.zoneSoundName, {loop: -1});
     }
+
+    clearScene(){
+      stageManager.removeChild(this.backgroundImage);
+      this.clearAllCombatAreas();
+    }
+
 
     setBackground(){
 
@@ -52,10 +64,9 @@ export default class Scene{
       let zoneManager  = new ZoneManager();
       let assetLoader  = new AssetLoader();
 
-      let backgroundImage = GraphicsManager.createBitmap(assetLoader.getAsset(zoneManager.zoneBackgroundName));
-      this.backgroundImage = backgroundImage;
+      this.backgroundImage = GraphicsManager.createBitmap(assetLoader.getAsset(zoneManager.zoneBackgroundName));
       
-      stageManager.addChild(backgroundImage);
+      stageManager.addChild(this.backgroundImage);
     }
 
     setCombatDimentions(){
@@ -85,7 +96,8 @@ export default class Scene{
           height  : height,
           x       : x,
           y       : y,
-          id      : 0
+          id      : 0,
+          sprites : []
       }
 
       this.combatArea[0] = this.combatAreaCenter;
@@ -109,7 +121,8 @@ export default class Scene{
           height  : height,
           x       : x,
           y       : y,
-          id      : 1
+          id      : 1,
+          sprites : []
       }
 
       this.combatArea[1] = this.combatAreaLeft;
@@ -132,7 +145,8 @@ export default class Scene{
           height  : height,
           x       : x,
           y       : y,
-          id      : 2
+          id      : 2,
+          sprites : []
       }
 
       this.combatArea[2] = this.combatAreaRight;
@@ -146,6 +160,9 @@ export default class Scene{
         shape = GraphicsManager.createHitAreaRectangle(combatArea.x, combatArea.y, combatArea.width, combatArea.height);
         shape.addEventListener("click", function(event) { EventManager.publish("COMBAT_SLOT_LEFT_CLICKED", combatArea.id); });
         stageManager.addChild(shape);
+        console.log(combatArea.id);
+        this.combatArea[combatArea.id].hitAreaRectangle = shape;
+        this.combatArea[combatArea.id].sprites.push(shape);
       });
 
       let zoneManager  = new ZoneManager();
@@ -158,5 +175,31 @@ export default class Scene{
       this.attackNWIndicator = corner;
       
       stageManager.addChild(corner);
+      this.combatArea[1].sprites.push(corner);
     }
+
+    clearAllCombatAreas(){
+
+      if(!this.combatArea) return;
+
+
+      this.combatArea.forEach(combatArea => {
+        combatArea.sprites.forEach(sprite => {
+          stageManager.removeChild(sprite);
+        })
+      })
+
+      this.combatArea = [];
+      global.gameStore.combatArea = [];
+
+    }
+
+    clearCombatArea(combatAreaId){
+
+      this.combatArea[combatAreaId].sprites.forEach(sprite => {
+        stageManager.removeChild(sprite);
+      })
+
+    }
+
 };

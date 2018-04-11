@@ -2,7 +2,7 @@ let instance = null;
 
 export default class StageManager {
     
-    constructor(canvasId) {
+    constructor(canvasId, windowWidth, windowHeight){
 
         if (!instance) {
             instance = this;
@@ -12,7 +12,7 @@ export default class StageManager {
 
     }
 
-    initNew(canvasId, windowWidth, windowHeight){
+    init(canvasId, windowWidth, windowHeight){
 
         let canvas  = document.getElementById(canvasId);
         let context = canvas.getContext('2d');
